@@ -6,6 +6,8 @@ import com.ksprogramming.customer.Customer;
 import com.ksprogramming.customer.CustomerService;
 import com.ksprogramming.employee.Employee;
 import com.ksprogramming.employee.EmployeeService;
+import com.ksprogramming.model.Model;
+import com.ksprogramming.model.ModelService;
 
 import java.sql.*;
 
@@ -29,10 +31,14 @@ public class Main {
             CustomerService customerService = new CustomerService(connection);
             EmployeeService employeeService = new EmployeeService(connection);
             BrandService brandService = new BrandService(connection);
+            ModelService modelService = new ModelService(connection);
 
+            //modelService.create(new Model(1, "Q7"));
+            //System.out.println(modelService.getId(1));
+            //modelService.find(new Model(1, null)).stream().forEach(System.out::println);
             //brandService.create(new Brand("Audi"));
             //System.out.println(brandService.getId(1));
-            brandService.find(new Brand(null)).stream().forEach(System.out::println);
+            //brandService.find(new Brand(null)).stream().forEach(System.out::println);
             //employeeService.create(new Employee("Krystian", "Sadowski", "870411", "39", null, "Coronation Park", "Aughnacloy","Bt696aw"));
            //employeeService.update(1, new Employee("Krystian", "Sadowski", "870430", "39", "1", "Coronation Park", "Aughnacloy","Bt696aw"));
             //employeeService.find(new Employee("Krystian", null, null, null, null, null, "Aughnacloy","Bt696aw")).stream().forEach(System.out::println);

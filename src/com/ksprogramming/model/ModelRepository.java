@@ -1,7 +1,8 @@
-package com.ksprogramming.brand;
+package com.ksprogramming.model;
 
 import com.ksprogramming.CommonRepository;
 import com.ksprogramming.DatabaseException;
+import com.ksprogramming.brand.Brand;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,26 +11,26 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrandRepository {
+public class ModelRepository {
     private Connection connection;
     private CommonRepository commonRepository;
 
-    public BrandRepository(Connection connection) {
+    public ModelRepository(Connection connection) {
         this.connection = connection;
         commonRepository = new CommonRepository(connection);
     }
 
-    public Brand getId(Integer id){
+    public Model getId(Integer id){
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
-            preparedStatement = connection.prepareStatement("select * from brand where id = ?");
+            preparedStatement = connection.prepareStatement("select * from model where id = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                return new Brand(resultSet.getInt("id"), resultSet.getString("name"));
+                return new Model(resultSet.getInt("id"), resultSet.getInt("brand_id"), resultSet.getString("name"));
             }
         }catch (SQLException sqlException){
             throw new DatabaseException(sqlException.getMessage(), sqlException);
@@ -40,15 +41,15 @@ public class BrandRepository {
         return null;
     }
 
-    public List<Brand> find (Brand brand){
+    public List<Model> find (Model model){
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-           String query = prepareQuery(brand);
-           preparedStatement = connection.prepareStatement(query);
-           setParameters(preparedStatement, brand);
-           resultSet = preparedStatement.executeQuery();
-           return prepareResultsSet(resultSet);
+            String query = prepareQuery(model);
+            preparedStatement = connection.prepareStatement(query);
+            setParameters(preparedStatement, model);
+            resultSet = preparedStatement.executeQuery();
+            return prepareResultsSet(resultSet);
         }catch (SQLException sqlException){
             throw new DatabaseException(sqlException.getMessage(), sqlException);
         }finally {
@@ -57,12 +58,13 @@ public class BrandRepository {
         }
     }
 
-    public Integer create (Brand brand){
+    public Integer create (Model model){
         PreparedStatement preparedStatement = null;
 
         try {
-            preparedStatement = connection.prepareStatement("insert into brand(name) values (?)");
-            preparedStatement.setString(1, brand.getName());
+            preparedStatement = connection.prepareStatement("insert into model(brand_id, name) values (?, ?)");
+            preparedStatement.setInt(1, model.getBrandId());
+            preparedStatement.setString(2, model.getName());
             preparedStatement.executeUpdate();
         }catch (SQLException sqlException){
             throw new DatabaseException(sqlException.getMessage(), sqlException);
@@ -72,12 +74,13 @@ public class BrandRepository {
         return commonRepository.getLastInsertedId();
     }
 
-    public void update(int id, Brand brand){
+    public void update(int id, Model model){
         PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = connection.prepareStatement("update brand set name = ? where id = ?");
-            preparedStatement.setString(1, brand.getName());
-            preparedStatement.setInt(2, id);
+            preparedStatement = connection.prepareStatement("update model set brand_id = ?, name = ? where id = ?");
+            preparedStatement.setInt(1, model.getBrandId());
+            preparedStatement.setString(2, model.getName());
+            preparedStatement.setInt(3, id);
             preparedStatement.executeUpdate();
         }catch (SQLException sqlException){
             throw new DatabaseException(sqlException.getMessage(), sqlException);
@@ -89,7 +92,7 @@ public class BrandRepository {
     public void remove(int id){
         PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = connection.prepareStatement("delete from brand where id = ?");
+            preparedStatement = connection.prepareStatement("delete from model where id = ?");
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         }catch (SQLException sqlException){
@@ -99,24 +102,30 @@ public class BrandRepository {
         }
     }
 
-    private List<Brand> prepareResultsSet(ResultSet resultSet) throws SQLException {
-        List<Brand> addBrand = new ArrayList<>();
+    private List<Model> prepareResultsSet(ResultSet resultSet) throws SQLException {
+        List<Model> addBrand = new ArrayList<>();
         while (resultSet.next()){
-            addBrand.add(new Brand(resultSet.getInt("id"), resultSet.getString("name")));
+            addBrand.add(new Model(resultSet.getInt("id"), resultSet.getInt("brand_id"), resultSet.getString("name")));
         }
         return addBrand;
     }
 
-    private void setParameters(PreparedStatement preparedStatement, Brand brand) throws SQLException {
+    private void setParameters(PreparedStatement preparedStatement, Model model) throws SQLException {
         int index = 1;
-        if (brand.getName() != null){
-            preparedStatement.setString(index, brand.getName());
+        if (model.getBrandId() != null) {
+            preparedStatement.setInt(index++, model.getBrandId());
+        }
+        if (model.getName() != null){
+            preparedStatement.setString(index, model.getName());
         }
     }
 
-    private String prepareQuery(Brand brand) {
-        String query = "select * from brand where 1=1 ";
-        if (brand.getName() != null){
+    private String prepareQuery(Model model) {
+        String query = "select * from model where 1=1 ";
+        if (model.getBrandId() != null) {
+            query = query + "and brand_id = ?";
+        }
+        if (model.getName() != null){
             query = query + "and name = ?";
         }
         return query;
@@ -139,3 +148,4 @@ public class BrandRepository {
     }
 
 }
+
