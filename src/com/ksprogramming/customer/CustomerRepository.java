@@ -186,6 +186,7 @@ public class CustomerRepository {
         } else if (customer.getPostCode() != null) {
             query = query + "and post_code = ?";
         }
+
         return query;
     }
 

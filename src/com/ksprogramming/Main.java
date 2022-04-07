@@ -1,5 +1,7 @@
 package com.ksprogramming;
 
+import com.ksprogramming.brand.Brand;
+import com.ksprogramming.brand.BrandService;
 import com.ksprogramming.customer.Customer;
 import com.ksprogramming.customer.CustomerService;
 import com.ksprogramming.employee.Employee;
@@ -18,17 +20,22 @@ public class Main {
         }
         Connection connection = null;
 
+        String url = "jdbc:mysql://localhost:3306/RentCar";
+        String user = "root";
+        String password = "Krystian87.pl";
         try {
-            connection =
-                    DriverManager.getConnection("jdbc:mysql://localhost:3306/RentCar?" +
-                            "user=root&password=Krystianjava87pl&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
-            System.out.println("connected");
+            connection = DriverManager.getConnection(url, user, password);
+            System.out.println("Connected");
             CustomerService customerService = new CustomerService(connection);
             EmployeeService employeeService = new EmployeeService(connection);
+            BrandService brandService = new BrandService(connection);
 
+            //brandService.create(new Brand("Audi"));
+            //System.out.println(brandService.getId(1));
+            brandService.find(new Brand(null)).stream().forEach(System.out::println);
             //employeeService.create(new Employee("Krystian", "Sadowski", "870411", "39", null, "Coronation Park", "Aughnacloy","Bt696aw"));
            //employeeService.update(1, new Employee("Krystian", "Sadowski", "870430", "39", "1", "Coronation Park", "Aughnacloy","Bt696aw"));
-            employeeService.find(new Employee("Krystian", null, null, null, null, null, "Aughnacloy","Bt696aw")).stream().forEach(System.out::println);
+            //employeeService.find(new Employee("Krystian", null, null, null, null, null, "Aughnacloy","Bt696aw")).stream().forEach(System.out::println);
             //System.out.println(customerService.get(2));
 
             //customerService.create(new Customer("P", null, null, "Alan", "Sadowski",
@@ -38,9 +45,9 @@ public class Main {
             //customerService.remove(3);
             //System.out.println(customerService.get(1));
             //customerService.find();
-            customerService.find(new Customer(null,null,null,"Adam",null,
-                    null,null,null,null,null, null)).stream()
-                    .forEach(System.out::println);
+//            customerService.find(new Customer(null,null,null,"Adam",null,
+//                    null,null,null,null,null, null)).stream()
+//                    .forEach(System.out::println);
             //System.out.println(customerService.create(new Customer("P", null, null, "Bogdan", "Kowalski", "697745", "11", "3", "Mickiewicza", "Elblag", "82-433")));
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
