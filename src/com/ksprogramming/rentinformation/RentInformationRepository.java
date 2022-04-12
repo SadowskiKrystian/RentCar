@@ -5,6 +5,7 @@ import com.ksprogramming.DatabaseException;
 import com.ksprogramming.car.Car;
 
 import java.sql.*;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +28,9 @@ public class RentInformationRepository {
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                return new RentInformation(resultSet.getDate("rent_start"), resultSet.getDate("rent_finish"), // todo
+                return new RentInformation(resultSet.getDate("rent_start").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), resultSet.getDate("rent_finish").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), // todo
                         resultSet.getInt("employee_id"), resultSet.getInt("customer_id"), resultSet.getString("customer_type"),
-                        resultSet.getString("customer_company_name"), resultSet.getString("customer_tax_number"), resultSet.getString("customer_first_name"),
+                        resultSet.getString("customer_company_name"), resultSet.getString(".customer_tax_number"), resultSet.getString("customer_first_name"),
                         resultSet.getString("customer_last_name"), resultSet.getString("customer_pesel"), resultSet.getString("customer_house_number"),
                         resultSet.getString("customer_flat_number"), resultSet.getString("customer_street_name"),
                         resultSet.getString("customer_city"), resultSet.getString("customer_post_code"), resultSet.getBigDecimal("rent_net_price"),
@@ -70,8 +71,8 @@ public class RentInformationRepository {
                             "customer_last_name, customer_pesel, customer_house_number, customer_flat_number, customer_street_name, " +
                             "customer_city, customer_post_code, rent_net_price, rent_percent, rent_gross_price) values (?, ?, ?, ?, ?, ? " +
                     "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?");
-            preparedStatement.setDate(1, rentInformation.getRentStart()); // todo
-            preparedStatement.setDate(2, rentInformation.getRentFinish()); //todo
+            preparedStatement.setTimestamp(1, java.sql.Timestamp.valueOf(rentInformation.getRentStart()));
+            preparedStatement.setTimestamp(2, java.sql.Timestamp.valueOf(rentInformation.getRentFinish()));
             preparedStatement.setInt(3, rentInformation.getEmployeeId());
             preparedStatement.setInt(4, rentInformation.getCustomerId());
             preparedStatement.setString(5, rentInformation.getCustomerType());
@@ -104,8 +105,8 @@ public class RentInformationRepository {
                     "employee_id = ?, customer_id = ?, customer_type = ?, customer_company_name = ?, customer_tax_number = ?, customer_first_name = ?" +
                     "customer_last_name = ?, customer_pesel = ?, customer_house_number = ?, customer_flat_number = ?, customer_street_name = ?" +
                     "customer_city = ?, customer_post_code = ?, rent_net_price = ?, rent_percent = ?, rent_gross_price = ? where id = ?");
-            preparedStatement.setDate(1, rentInformation.getRentStart()); // todo
-            preparedStatement.setDate(2, rentInformation.getRentFinish()); //todo
+            preparedStatement.setTimestamp(1, java.sql.Timestamp.valueOf(rentInformation.getRentStart()));
+            preparedStatement.setTimestamp(2, java.sql.Timestamp.valueOf(rentInformation.getRentFinish()));
             preparedStatement.setInt(3, rentInformation.getEmployeeId());
             preparedStatement.setInt(4, rentInformation.getCustomerId());
             preparedStatement.setString(5, rentInformation.getCustomerType());
@@ -147,7 +148,7 @@ public class RentInformationRepository {
     private List<RentInformation> prepareResultsSet(ResultSet resultSet) throws SQLException {
         List<RentInformation> addBrand = new ArrayList<>();
         while (resultSet.next()){
-            addBrand.add(new RentInformation(resultSet.getDate("rent_start"), resultSet.getDate("rent_finish"), // todo
+            addBrand.add(new RentInformation(resultSet.getDate("rent_start").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), resultSet.getDate("rent_finish").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), // todo
                     resultSet.getInt("employee_id"), resultSet.getInt("customer_id"), resultSet.getString("customer_type"),
                     resultSet.getString("customer_company_name"), resultSet.getString("customer_tax_number"), resultSet.getString("customer_first_name"),
                     resultSet.getString("customer_last_name"), resultSet.getString("customer_pesel"), resultSet.getString("customer_house_number"),
@@ -161,10 +162,10 @@ public class RentInformationRepository {
     private void setParameters(PreparedStatement preparedStatement, RentInformation rentInformation) throws SQLException {
         int index = 1;
         if (rentInformation.getRentStart() != null){
-            preparedStatement.setDate(index++, rentInformation.getRentStart()); //todo
+            preparedStatement.setTimestamp(index++, java.sql.Timestamp.valueOf(rentInformation.getRentStart()));
         }
         if (rentInformation.getRentFinish() != null){
-            preparedStatement.setString(index++, rentInformation.getRentFinish()); //todo
+            preparedStatement.setTimestamp(index++, java.sql.Timestamp.valueOf(rentInformation.getRentFinish()));
         }
         if (rentInformation.getEmployeeId() != null){
             preparedStatement.setInt(index++, rentInformation.getEmployeeId());
@@ -284,4 +285,5 @@ public class RentInformationRepository {
             throw new DatabaseException(sqlException.getMessage(),sqlException);
         }
     }
+
 }

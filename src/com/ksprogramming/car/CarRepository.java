@@ -2,9 +2,11 @@ package com.ksprogramming.car;
 
 import com.ksprogramming.CommonRepository;
 import com.ksprogramming.DatabaseException;
-import com.ksprogramming.brand.Brand;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,7 @@ public class CarRepository {
 
     public CarRepository(Connection connection) {
         this.connection = connection;
-        commonRepository = new CommonRepository(connection);
+        this.commonRepository = new CommonRepository(connection);
     }
 
     public Car getId(Integer id){
@@ -28,7 +30,7 @@ public class CarRepository {
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 return new Car(resultSet.getInt("id"), resultSet.getString("registration_plate"),
-                        resultSet.getString("vin_number"), resultSet.getDate("purchase_date"),
+                        resultSet.getString("vin_number"), resultSet.getDate("purchase_date").toLocalDate(),
                         resultSet.getInt("brand_id"), resultSet.getInt("model_id"));
             }
         }catch (SQLException sqlException){
@@ -65,7 +67,7 @@ public class CarRepository {
                     " purchase_date, brand_id, model_id) values (?, ?, ? ,?, ?)");
             preparedStatement.setString(1, car.getRegistrationPlate());
             preparedStatement.setString(2, car.getVinNumber());
-            preparedStatement.setDate(3, (Date) car.getPurchaseDate()); //todo
+            preparedStatement.setDate(3, java.sql.Date.valueOf(car.getPurchaseDate())); //todo
             preparedStatement.setInt(4, car.getBrandId());
             preparedStatement.setInt(5, car.getModelId());
             preparedStatement.executeUpdate();
@@ -84,7 +86,7 @@ public class CarRepository {
                     " purchase_date = ?, brand_id = ?, model_id = ? where id = ?");
             preparedStatement.setString(1, car.getRegistrationPlate());
             preparedStatement.setString(2, car.getVinNumber());
-            preparedStatement.setDate(3, (Date) car.getPurchaseDate()); //todo
+            preparedStatement.setDate(3, java.sql.Date.valueOf(car.getPurchaseDate())); //todo
             preparedStatement.setInt(4, car.getBrandId());
             preparedStatement.setInt(5, car.getModelId());
             preparedStatement.setInt(6, id);
@@ -113,7 +115,7 @@ public class CarRepository {
         List<Car> addBrand = new ArrayList<>();
         while (resultSet.next()){
             addBrand.add(new Car(resultSet.getInt("id"), resultSet.getString("registration_plate"),
-                    resultSet.getString("vin_number"), resultSet.getDate("purchase_date"),
+                    resultSet.getString("vin_number"), resultSet.getDate("purchase_date").toLocalDate(),
                     resultSet.getInt("brand_id"), resultSet.getInt("model_id")));
         }
         return addBrand;
@@ -128,7 +130,7 @@ public class CarRepository {
             preparedStatement.setString(index++, car.getVinNumber());
         }
         if (car.getPurchaseDate() != null){
-            preparedStatement.setDate(index++, (Date) car.getPurchaseDate()); //todo
+            preparedStatement.setDate(index++, java.sql.Date.valueOf(car.getPurchaseDate())); //todo
         }
         if (car.getBrandId() != null){
             preparedStatement.setInt(index++, car.getBrandId());

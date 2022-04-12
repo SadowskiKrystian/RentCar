@@ -12,7 +12,11 @@ import com.ksprogramming.model.Model;
 import com.ksprogramming.model.ModelService;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.zip.DataFormatException;
 
 public class Main {
     public static void main(String[] args) {
@@ -27,7 +31,7 @@ public class Main {
 
         String url = "jdbc:mysql://localhost:3306/RentCar";
         String user = "root";
-        String password = "Krystian87.pl";
+        String password = "Krystianjava87pl";
         try {
             connection = DriverManager.getConnection(url, user, password);
             System.out.println("Connected");
@@ -36,7 +40,11 @@ public class Main {
             BrandService brandService = new BrandService(connection);
             ModelService modelService = new ModelService(connection);
             CarService carService = new CarService(connection);
-            carService.create(new Car("TNZ5610", "XDFA009ASW10", new Date(2020, 10, 11), 1, 1));
+           // carService.create(new Car("VHZ2243", "XDFA00ggrrgf0", LocalDate.of(2020, 06, 11), 1, 1));
+            LocalDateTime time = LocalDateTime.now();
+            String europeanDatePattern = "yyyy/MM/dd";
+            DateTimeFormatter europeanDateFormatter = DateTimeFormatter.ofPattern(europeanDatePattern);
+            System.out.println(europeanDateFormatter.format(time));
 
             //modelService.create(new Model(1, "Q7"));
             //System.out.println(modelService.getId(1));

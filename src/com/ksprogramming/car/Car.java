@@ -8,11 +8,11 @@ public class Car {
     private Integer id;
     private String registrationPlate;
     private String vinNumber;
-    private Date purchaseDate;
+    private LocalDate purchaseDate;
     private Integer brandId;
     private Integer modelId;
 
-    public Car(Integer id, String registrationPlate, String vinNumber, Date purchaseDate, Integer brandId, Integer modelId) {
+    public Car(Integer id, String registrationPlate, String vinNumber, LocalDate purchaseDate, Integer brandId, Integer modelId) {
         this.id = id;
         this.registrationPlate = registrationPlate;
         this.vinNumber = vinNumber;
@@ -21,7 +21,7 @@ public class Car {
         this.modelId = modelId;
     }
 
-    public Car(String registrationPlate, String vinNumber, Date purchaseDate, Integer brandId, Integer modelId) {
+    public Car(String registrationPlate, String vinNumber, LocalDate purchaseDate, Integer brandId, Integer modelId) {
         this.registrationPlate = registrationPlate;
         this.vinNumber = vinNumber;
         this.purchaseDate = purchaseDate;
@@ -41,7 +41,7 @@ public class Car {
         return vinNumber;
     }
 
-    public Date getPurchaseDate() {
+    public LocalDate getPurchaseDate() {
         return purchaseDate;
     }
 
