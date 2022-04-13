@@ -67,7 +67,7 @@ public class CarRepository {
                     " purchase_date, brand_id, model_id) values (?, ?, ? ,?, ?)");
             preparedStatement.setString(1, car.getRegistrationPlate());
             preparedStatement.setString(2, car.getVinNumber());
-            preparedStatement.setDate(3, java.sql.Date.valueOf(car.getPurchaseDate())); //todo
+            preparedStatement.setDate(3, java.sql.Date.valueOf(car.getPurchaseDate()));
             preparedStatement.setInt(4, car.getBrandId());
             preparedStatement.setInt(5, car.getModelId());
             preparedStatement.executeUpdate();
@@ -86,7 +86,7 @@ public class CarRepository {
                     " purchase_date = ?, brand_id = ?, model_id = ? where id = ?");
             preparedStatement.setString(1, car.getRegistrationPlate());
             preparedStatement.setString(2, car.getVinNumber());
-            preparedStatement.setDate(3, java.sql.Date.valueOf(car.getPurchaseDate())); //todo
+            preparedStatement.setDate(3, java.sql.Date.valueOf(car.getPurchaseDate()));
             preparedStatement.setInt(4, car.getBrandId());
             preparedStatement.setInt(5, car.getModelId());
             preparedStatement.setInt(6, id);
@@ -130,7 +130,7 @@ public class CarRepository {
             preparedStatement.setString(index++, car.getVinNumber());
         }
         if (car.getPurchaseDate() != null){
-            preparedStatement.setDate(index++, java.sql.Date.valueOf(car.getPurchaseDate())); //todo
+            preparedStatement.setDate(index++, java.sql.Date.valueOf(car.getPurchaseDate()));
         }
         if (car.getBrandId() != null){
             preparedStatement.setInt(index++, car.getBrandId());

@@ -62,7 +62,6 @@ post_code varchar (10) not null
 create table rent_information
 (
 id int auto_increment primary key,
-
 car_id int not null,
 rent_start datetime not null ,
 rent_finish datetime not null,

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 public class RentInformation {
     private Integer id;
+    private Integer carId;
     private LocalDateTime rentStart;
     private LocalDateTime rentFinish;
     private Integer employeeId;
@@ -24,12 +25,13 @@ public class RentInformation {
     private BigDecimal rentPercent;
     private BigDecimal rentGrossPrice;
 
-    public RentInformation(Integer id, LocalDateTime rentStart, LocalDateTime rentFinish, Integer employeeId,
+    public RentInformation(Integer id, Integer carId, LocalDateTime rentStart, LocalDateTime rentFinish, Integer employeeId,
                            Integer customerId, String customerType, String customerCompanyName, String customerTaxNumber,
                            String customerFirstName, String customerLastName, String customerPesel, String customerHouseNumber,
                            String customerFlatNumber, String customerStreetName, String customerCity, String customerPostCode,
                            BigDecimal rentNetPrice, BigDecimal rentPercent, BigDecimal rentGrossPrice) {
         this.id = id;
+        this.carId = carId;
         this.rentStart = rentStart;
         this.rentFinish = rentFinish;
         this.employeeId = employeeId;
@@ -50,11 +52,12 @@ public class RentInformation {
         this.rentGrossPrice = rentGrossPrice;
     }
 
-    public RentInformation(LocalDateTime rentStart, LocalDateTime rentFinish, Integer employeeId, Integer customerId,
+    public RentInformation(Integer carId, LocalDateTime rentStart, LocalDateTime rentFinish, Integer employeeId, Integer customerId,
                            String customerType, String customerCompanyName, String customerTaxNumber, String customerFirstName,
                            String customerLastName, String customerPesel, String customerHouseNumber, String customerFlatNumber,
                            String customerStreetName, String customerCity, String customerPostCode, BigDecimal rentNetPrice,
                            BigDecimal rentPercent, BigDecimal rentGrossPrice) {
+        this.carId = carId;
         this.rentStart = rentStart;
         this.rentFinish = rentFinish;
         this.employeeId = employeeId;
@@ -77,6 +80,10 @@ public class RentInformation {
 
     public Integer getId() {
         return id;
+    }
+
+    public Integer getCarId() {
+        return carId;
     }
 
     public LocalDateTime getRentStart() {
@@ -155,6 +162,7 @@ public class RentInformation {
     public String toString() {
         return "RentInformation{" +
                 "id=" + id +
+                ", carId=" + carId +
                 ", rentStart=" + rentStart +
                 ", rentFinish=" + rentFinish +
                 ", employeeId=" + employeeId +

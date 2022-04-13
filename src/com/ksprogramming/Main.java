@@ -10,7 +10,10 @@ import com.ksprogramming.employee.Employee;
 import com.ksprogramming.employee.EmployeeService;
 import com.ksprogramming.model.Model;
 import com.ksprogramming.model.ModelService;
+import com.ksprogramming.rentinformation.RentInformation;
+import com.ksprogramming.rentinformation.RentInformationService;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,7 +34,7 @@ public class Main {
 
         String url = "jdbc:mysql://localhost:3306/RentCar";
         String user = "root";
-        String password = "Krystianjava87pl";
+        String password = "Krystian87.pl";
         try {
             connection = DriverManager.getConnection(url, user, password);
             System.out.println("Connected");
@@ -40,11 +43,22 @@ public class Main {
             BrandService brandService = new BrandService(connection);
             ModelService modelService = new ModelService(connection);
             CarService carService = new CarService(connection);
-           // carService.create(new Car("VHZ2243", "XDFA00ggrrgf0", LocalDate.of(2020, 06, 11), 1, 1));
-            LocalDateTime time = LocalDateTime.now();
-            String europeanDatePattern = "yyyy/MM/dd";
-            DateTimeFormatter europeanDateFormatter = DateTimeFormatter.ofPattern(europeanDatePattern);
-            System.out.println(europeanDateFormatter.format(time));
+            RentInformationService rentInformationService = new RentInformationService(connection);
+
+//            rentInformationService.create(new RentInformation(1, LocalDateTime.of( 2020,11,12,12,20), LocalDateTime.of(2020,11,15,12,20),
+//                    1, 1, "P", null, null, "Adam", "Kulinski", "690713",
+//                    "11", null, "Chestnut grow",
+//                    "Aughnacloy", "BT696AD", BigDecimal.valueOf(40), BigDecimal.valueOf(23), BigDecimal.valueOf(49.2)));
+            //System.out.println(rentInformationService.getId(1));
+            rentInformationService.find(new RentInformation(null, null , null, null,
+                    null, null, null, null, "Adam",
+                    null, null, null, null, null,
+                    null, null, null, null, null)).stream().forEach(System.out::println);
+            // carService.create(new Car("VHZ2243", "XDFA00ggrrgf0", LocalDate.of(2020, 06, 11), 1, 1));
+            // LocalDateTime time = LocalDateTime.now();
+            //String europeanDatePattern = "yyyy/MM/dd";
+            //DateTimeFormatter europeanDateFormatter = DateTimeFormatter.ofPattern(europeanDatePattern);
+            //System.out.println(europeanDateFormatter.format(time));
 
             //modelService.create(new Model(1, "Q7"));
             //System.out.println(modelService.getId(1));
