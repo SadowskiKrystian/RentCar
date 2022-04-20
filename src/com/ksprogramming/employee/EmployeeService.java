@@ -1,7 +1,5 @@
 package com.ksprogramming.employee;
 
-import com.ksprogramming.customer.Customer;
-
 import java.sql.Connection;
 import java.util.List;
 
@@ -14,8 +12,8 @@ public class EmployeeService {
         employeeRepository = new EmployeeRepository(connection);
     }
 
-    public Employee get(Integer id) {
-        return employeeRepository.get(id);
+    public Employee getId(Integer id) {
+        return employeeRepository.getId(id);
 
     }
 

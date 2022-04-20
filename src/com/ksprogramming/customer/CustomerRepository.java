@@ -21,7 +21,7 @@ public class CustomerRepository {
         this.commonRepository = new CommonRepository(connection);
     }
 
-    public Customer get(Integer id) {
+    public Customer getId(Integer id) {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {

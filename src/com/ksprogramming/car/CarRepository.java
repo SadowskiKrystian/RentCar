@@ -2,6 +2,7 @@ package com.ksprogramming.car;
 
 import com.ksprogramming.CommonRepository;
 import com.ksprogramming.DatabaseException;
+import com.ksprogramming.DateTimeUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -86,7 +87,7 @@ public class CarRepository {
                     " purchase_date = ?, brand_id = ?, model_id = ? where id = ?");
             preparedStatement.setString(1, car.getRegistrationPlate());
             preparedStatement.setString(2, car.getVinNumber());
-            preparedStatement.setDate(3, java.sql.Date.valueOf(car.getPurchaseDate()));
+            preparedStatement.setDate(3, DateTimeUtil.convertToLocalDate(car.getPurchaseDate()));
             preparedStatement.setInt(4, car.getBrandId());
             preparedStatement.setInt(5, car.getModelId());
             preparedStatement.setInt(6, id);

@@ -13,8 +13,8 @@ public class CustomerService {
         customerRepository = new CustomerRepository(connection);
     }
 
-    public Customer get(Integer id) {
-        return customerRepository.get(id);
+    public Customer getId(Integer id) {
+        return customerRepository.getId(id);
 
     }
 

@@ -3,7 +3,6 @@ package com.ksprogramming.employee;
 import com.ksprogramming.CommonRepository;
 import com.ksprogramming.CustomerNotFoundException;
 import com.ksprogramming.DatabaseException;
-import com.ksprogramming.customer.Customer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,7 +20,7 @@ public class EmployeeRepository {
         commonRepository = new CommonRepository(connection);
     }
 
-    public Employee get(Integer id) {
+    public Employee getId(Integer id) {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {

@@ -59,7 +59,6 @@ public class BrandRepository {
 
     public Integer create (Brand brand){
         PreparedStatement preparedStatement = null;
-
         try {
             preparedStatement = connection.prepareStatement("insert into brand(name) values (?)");
             preparedStatement.setString(1, brand.getName());
