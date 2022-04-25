@@ -17,11 +17,8 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.zip.DataFormatException;
 
 public class Main {
     private static boolean exitApplication = true;
@@ -46,31 +43,31 @@ public class Main {
 
         String url = "jdbc:mysql://localhost:3306/RentCar";
         String user = "root";
-        String password = "Krystian87.pl";
-        while (exitApplication) {
-            try {
-                connection = DriverManager.getConnection(url, user, password);
-                customerService = new CustomerService(connection);
-                employeeService = new EmployeeService(connection);
-                brandService = new BrandService(connection);
-                ModelService modelService = new ModelService(connection);
-                CarService carService = new CarService(connection);
-                RentInformationService rentInformationService = new RentInformationService(connection);
-                System.out.println("Connected");
+        String password = "Krystianjava87pl";
+
+        try {
+            connection = DriverManager.getConnection(url, user, password);
+            customerService = new CustomerService(connection);
+            employeeService = new EmployeeService(connection);
+            brandService = new BrandService(connection);
+            modelService = new ModelService(connection);
+            carService = new CarService(connection);
+            rentInformationService = new RentInformationService(connection);
+            System.out.println("Connected");
+            while (exitApplication){
                 showMenu();
                 chooseNumberMenu();
-
-
-            } catch (SQLException ex) {
-                System.out.println("SQLException: " + ex.getMessage());
-                System.out.println("SQLState: " + ex.getSQLState());
-                System.out.println("VendorError: " + ex.getErrorCode());
-            } catch (InputMismatchException inputMismatchException) {
-                System.out.println("Podales nie poprawna wartosc");
-            } finally {
-                closeConnection(connection);
             }
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        } catch (InputMismatchException inputMismatchException) {
+            System.out.println("Podales nie poprawna wartosc");
+        } finally {
+            closeConnection(connection);
         }
+
     }
 
 
@@ -90,34 +87,34 @@ public class Main {
     private static void chooseNumberMenu() {
 
         switch (chooseMenu()) {
-            case 1:
+            case ADD:
                 showSubMenu();
-                chooseCreateSubMenuNumber();
+                chooseCreateSubMenuNumber(chooseMenu());
                 break;
-            case 2:
+            case CHANGE:
                 showSubMenu();
-                chooseUpdateSubMenuNumber();
+                chooseUpdateSubMenuNumber(chooseMenu());
                 break;
-            case 3:
+            case FIND_BY_ID:
                 showSubMenu();
-                chooseGetIdSubMenuNumber();
+                chooseGetIdSubMenuNumber(chooseMenu());
                 break;
-            case 4:
+            case FIND:
                 showSubMenu();
-                chooseFindSubMenuNumber();
+                printResults(chooseMenu());
                 break;
-            case 5:
+            case DELETE:
                 showSubMenu();
-                chooseDeleteSubMenuNumber();
+                chooseDeleteSubMenuNumber(chooseMenu());
                 break;
-            case 6:
+            case EXIT:
                 exitApplication = false;
                 break;
         }
     }
 
-    private static void chooseCreateSubMenuNumber() {
-        switch (chooseMenu()) {
+    private static void chooseCreateSubMenuNumber(MenuItem chosenMenu) {
+        switch (chosenMenu) {
             case 1:
                 carService.create(car());
                 break;
@@ -139,8 +136,8 @@ public class Main {
         }
     }
 
-    private static void chooseGetIdSubMenuNumber() {
-        switch (chooseMenu()) {
+    private static void chooseGetIdSubMenuNumber(MenuItem chosenMenu) {
+        switch (chosenMenu) {
             case 1:
                 System.out.println(carService.getId(id()));
                 break;
@@ -162,31 +159,31 @@ public class Main {
         }
     }
 
-    private static void chooseFindSubMenuNumber() {
-        switch (chooseMenu()) {
+    private static void printResults(MenuItem chosenMenu) {
+        switch (chosenMenu) {
             case 1:
-                carService.find(car());
+                carService.find(car()).stream().forEach(System.out::println);
                 break;
             case 2:
-                brandService.find(brand());
+                brandService.find(brand()).stream().forEach(System.out::println);
                 break;
             case 3:
-                modelService.find(model());
+                modelService.find(model()).stream().forEach(System.out::println);
                 break;
             case 4:
-                employeeService.find(employee());
+                employeeService.find(employee()).stream().forEach(System.out::println);
                 break;
             case 5:
-                customerService.find(customer());
+                customerService.find(customer()).stream().forEach(System.out::println);
                 break;
             case 6:
-                rentInformationService.find(rentInformation());
+                rentInformationService.find(rentInformation()).stream().forEach(System.out::println);
                 break;
         }
     }
 
-    private static void chooseUpdateSubMenuNumber() {
-        switch (chooseMenu()) {
+    private static void chooseUpdateSubMenuNumber(MenuItem chosenMenu) {
+        switch (chosenMenu) {
             case 1:
                 carService.update(id(), car());
                 break;
@@ -208,8 +205,8 @@ public class Main {
         }
     }
 
-    private static void chooseDeleteSubMenuNumber() {
-        switch (chooseMenu()) {
+    private static void chooseDeleteSubMenuNumber(MenuItem chosenMenu) {
+        switch (chosenMenu) {
             case 1:
                 carService.remove(id());
                 break;
@@ -384,9 +381,28 @@ public class Main {
         return id;
     }
 
-    private static Integer chooseMenu(){
+    private static MenuItem chooseMenu() {
         Integer chooseMenu = keyboard.nextInt();
-        return chooseMenu;
+        return prepareMenuItem(chooseMenu);
+    }
+
+    private static MenuItem prepareMenuItem(Integer chosenMenu){
+        switch (chosenMenu){
+            case 1:
+                return MenuItem.ADD;
+            case 2:
+                return MenuItem.CHANGE;
+            case 3:
+                return MenuItem.FIND_BY_ID;
+            case 4:
+                return MenuItem.FIND;
+            case 5:
+                return MenuItem.DELETE;
+            case 6:
+                return MenuItem.EXIT;
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
 
