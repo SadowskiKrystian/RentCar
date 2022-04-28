@@ -30,7 +30,7 @@ public class RentInformationRepository {
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                return new RentInformation(resultSet.getInt("car_id"), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_start")), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_finish")),
+                return new RentInformation(resultSet.getInt("id"), resultSet.getInt("car_id"), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_start")), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_finish")),
                         resultSet.getInt("employee_id"), resultSet.getInt("customer_id"), resultSet.getString("customer_type"),
                         resultSet.getString("customer_company_name"), resultSet.getString("customer_tax_number"), resultSet.getString("customer_first_name"),
                         resultSet.getString("customer_last_name"), resultSet.getString("customer_pesel"), resultSet.getString("customer_house_number"),
@@ -72,7 +72,7 @@ public class RentInformationRepository {
                             "employee_id, customer_id, customer_type, customer_company_name, customer_tax_number, customer_first_name, " +
                             "customer_last_name, customer_pesel, customer_house_number, customer_flat_number, customer_street_name, " +
                             "customer_city, customer_post_code, rent_net_price, rent_percent, rent_gross_price) " + "" +
-                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             preparedStatement.setInt(1, rentInformation.getCarId());
             preparedStatement.setTimestamp(2, DateTimeUtil.convertToSqlDateTime(rentInformation.getRentStart()));
             preparedStatement.setTimestamp(3, DateTimeUtil.convertToSqlDateTime(rentInformation.getRentFinish()));
@@ -152,7 +152,7 @@ public class RentInformationRepository {
     private List<RentInformation> prepareResultsSet(ResultSet resultSet) throws SQLException {
         List<RentInformation> addBrand = new ArrayList<>();
         while (resultSet.next()){
-            addBrand.add(new RentInformation(resultSet.getInt("car_id"), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_start")), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_finish")),
+            addBrand.add(new RentInformation(resultSet.getInt("id"), resultSet.getInt("car_id"), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_start")), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_finish")),
                     resultSet.getInt("employee_id"), resultSet.getInt("customer_id"), resultSet.getString("customer_type"),
                     resultSet.getString("customer_company_name"), resultSet.getString("customer_tax_number"), resultSet.getString("customer_first_name"),
                     resultSet.getString("customer_last_name"), resultSet.getString("customer_pesel"), resultSet.getString("customer_house_number"),

@@ -23,9 +23,6 @@ public class Brand {
 
     @Override
     public String toString() {
-        return "Brand{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return  id  + name  ;
     }
 }

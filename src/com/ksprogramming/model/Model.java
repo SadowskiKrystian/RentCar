@@ -30,10 +30,6 @@ public class Model {
 
     @Override
     public String toString() {
-        return "Model{" +
-                "id=" + id +
-                ", brandId=" + brandId +
-                ", name='" + name + '\'' +
-                '}';
+        return id + "\t" + brandId + "\t\t\t " + name;
     }
 }

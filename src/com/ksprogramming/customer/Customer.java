@@ -93,17 +93,17 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Id: " + id +
-                ", Type: " + type +
-                ", CompanyName: " + companyName +
-                ", FaxNumber: " + taxNumber +
-                ", FirstName: " + firstName +
-                ", LastName: " + lastName +
-                ", Pesel: " + pesel +
-                ", HouseNumber: " + houseNumber +
-                ", FlatNumber: " + flatNumber +
-                ", StreetName: " + streetName +
-                ", City: " + city +
-                ", PostCode: " + postCode;
+        return id +
+                type +
+                companyName +
+                taxNumber +
+                firstName +
+                lastName +
+                pesel +
+                houseNumber +
+                flatNumber +
+                streetName +
+                city +
+                postCode;
     }
 }

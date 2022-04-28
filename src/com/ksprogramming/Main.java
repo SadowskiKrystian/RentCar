@@ -43,7 +43,7 @@ public class Main {
 
         String url = "jdbc:mysql://localhost:3306/RentCar";
         String user = "root";
-        String password = "Krystianjava87pl";
+        String password = "Krystian87.pl";
 
         try {
             connection = DriverManager.getConnection(url, user, password);
@@ -54,9 +54,9 @@ public class Main {
             carService = new CarService(connection);
             rentInformationService = new RentInformationService(connection);
             System.out.println("Connected");
-            while (exitApplication){
+            while (exitApplication) {
                 showMenu();
-                chooseNumberMenu();
+                Menu(chooseMenu());
             }
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
@@ -75,160 +75,298 @@ public class Main {
         System.out.println("Witamy w aplikacji do wynajmowania samochodow");
         System.out.println("----------------------------------------------------------------------------------------------");
         System.out.println("Wybierz z menu co chcesz zrobić:");
-        System.out.println("1 - Dodaj do bazy danych\n2 - Zmien dane w bazie danych\n3 - Znajdz po Id\n4 - Znajdz po danych\n5 - "
-                + "Usun z bazy danych\n6 - Zamknij aplikacje");
+        System.out.println("1 - Dodaj samochód\n" +
+                "2 - Znajdź samochód po danych\n" +
+                "3 - Znajdz samochód po Id\n" +
+                "4 - Zaktualizuj samochód\n" +
+                "5 - Usun samochód\n" +
+                "6 - Dodaj markę\n" +
+                "7 - Znajdź markę po danych\n" +
+                "8 - Znajdz markę po Id\n" +
+                "9 - Zaktualizuj markę\n" +
+                "10 - Usun markę\n" +
+                "11 - Dodaj model\n" +
+                "12 - Znajdź model po danych\n" +
+                "13 - Znajdz model po Id\n" +
+                "14 - Zaktualizuj model\n" +
+                "15 - Usun model\n" +
+                "16 - Dodaj pracownika\n" +
+                "17 - Znajdź pracownika po danych\n" +
+                "18 - Znajdz pracownika po Id\n" +
+                "19 - Zaktualizuj pracownika\n" +
+                "20 - Usun pracownika\n" +
+                "21 - Dodaj klienta\n" +
+                "22 - Znajdź klienta po danych\n" +
+                "23 - Znajdz klienta po Id\n" +
+                "24 - Zaktualizuj klienta\n" +
+                "25 - Usun klienta\n" +
+                "26 - Dodaj informacje o wypożyczeniu\n" +
+                "27 - Znajdź informacje o wypożyczeniu po danych\n" +
+                "28 - Znajdz informacje o wypożyczeniu po Id\n" +
+                "29 - Zaktualizuj informacje o wypożyczeniu\n" +
+                "30 - Usun informacje o wypożyczeniu\n" +
+                "31 - Zamknij aplikacje");
     }
 
-    private static void showSubMenu() {
-        System.out.println("Wybierz w ktorej bazie chcesz dodac dane:\n1 - Samochod\n2 - Marka\n3 - Model\n4 - Pracownicy" +
-                "\n5 - Klienci\n6 - Wynajem auta");
-    }
 
-    private static void chooseNumberMenu() {
-
-        switch (chooseMenu()) {
-            case ADD:
-                showSubMenu();
-                chooseCreateSubMenuNumber(chooseMenu());
+    private static void Menu(MenuItem chooseMenu) {
+        switch (chooseMenu) {
+            case ADD_CAR:
+                carService.create(car(true));
                 break;
-            case CHANGE:
-                showSubMenu();
-                chooseUpdateSubMenuNumber(chooseMenu());
+            case FIND_CAR:
+                carService.find(car(false));
                 break;
-            case FIND_BY_ID:
-                showSubMenu();
-                chooseGetIdSubMenuNumber(chooseMenu());
+            case FIND_BY_ID_CAR:
+                carService.getId(id());
                 break;
-            case FIND:
-                showSubMenu();
-                printResults(chooseMenu());
+            case UPDATE_CAR:
+                printCar();
+                carService.update(id(), car(true));
                 break;
-            case DELETE:
-                showSubMenu();
-                chooseDeleteSubMenuNumber(chooseMenu());
+            case DELETE_CAR:
+                printCar();
+                carService.remove(id());
+                break;
+            case ADD_BRAND:
+                brandService.create(brand());
+                break;
+            case FIND_BRAND:
+                brandService.find(brand());
+                break;
+            case FIND_BY_ID_BRAND:
+                brandService.getId(id());
+                break;
+            case UPDATE_BRAND:
+                printBrand();
+                brandService.update(id(), brand());
+                break;
+            case DELETE_BRAND:
+                printBrand();
+                brandService.remove(id());
+                break;
+            case ADD_MODEL:
+                modelService.create(model(true));
+                break;
+            case FIND_MODEL:
+                modelService.find(model(false));
+                break;
+            case FIND_BY_ID_MODEL:
+                modelService.getId(id());
+                break;
+            case UPDATE_MODEL:
+                printModel();
+                modelService.update(id(), model(true));
+                break;
+            case DELETE_MODEL:
+                printModel();
+                modelService.remove(id());
+                break;
+            case ADD_EMPLOYEE:
+                employeeService.create(employee());
+                break;
+            case FIND_EMPLOYEE:
+                employeeService.find(employee());
+                break;
+            case FIND_BY_ID_EMPLOYEE:
+                employeeService.getId(id());
+                break;
+            case UPDATE_EMPLOYEE:
+                printEmployee();
+                employeeService.update(id(), employee());
+                break;
+            case DELETE_EMPLOYEE:
+                printEmployee();
+                employeeService.remove(id());
+                break;
+            case ADD_CUSTOMER:
+                customerService.create(customer());
+                break;
+            case FIND_CUSTOMER:
+                customerService.find(customer());
+                break;
+            case FIND_BY_ID_CUSTOMER:
+                customerService.getId(id());
+                break;
+            case UPDATE_CUSTOMER:
+                printCustomer();
+                customerService.update(id(), customer());
+                break;
+            case DELETE_CUSTOMER:
+                printCustomer();
+                customerService.remove(id());
+                break;
+            case ADD_RENT:
+                rentInformationService.create(rentInformation(false));
+                break;
+            case FIND_RENT:
+                rentInformationService.find(rentInformation(false));
+                break;
+            case FIND_BY_ID_RENT:
+                rentInformationService.getId(id());
+                break;
+            case UPDATE_RENT:
+                printRentInformation();
+                rentInformationService.update(id(), rentInformation(true));
+                break;
+            case DELETE_RENT:
+                printRentInformation();
+                rentInformationService.remove(id());
                 break;
             case EXIT:
                 exitApplication = false;
                 break;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 
-    private static void chooseCreateSubMenuNumber(MenuItem chosenMenu) {
-        switch (chosenMenu) {
-            case 1:
-                carService.create(car());
-                break;
-            case 2:
-                brandService.create(brand());
-                break;
-            case 3:
-                modelService.create(model());
-                break;
-            case 4:
-                employeeService.create(employee());
-                break;
-            case 5:
-                customerService.create(customer());
-                break;
-            case 6:
-                rentInformationService.create(rentInformation());
-                break;
-        }
+    private static void printRentInformation(){
+        System.out.printf("%-15s", "Id:");
+        System.out.printf("%-15s", "Id Auta:");
+        System.out.printf("%-30s", "Start wynaj:");
+        System.out.printf("%-30s", "Koniec wynaj:");
+        System.out.printf("%-15s", "Id prac.:");
+        System.out.printf("%-15s", "Id klienta:");
+        System.out.printf("%-15s", "Typ:");
+        System.out.printf("%-30s", "Nazwa firmy");
+        System.out.printf("%-15s", "Numer tax");
+        System.out.printf("%-15s", "Imię:");
+        System.out.printf("%-15s", "Nazwisko:");
+        System.out.printf("%-15s", "Pesel:");
+        System.out.printf("%-15s", "Nr domu:");
+        System.out.printf("%-15s", "Nr miesz.:");
+        System.out.printf("%-25s", "Ulica:");
+        System.out.printf("%-15s", "Miasto:");
+        System.out.printf("%-15s", "Kod pocztowy:");
+        System.out.println("");
+        rentInformationService.find(new RentInformation(null, null, null, null, null, null, null, null, null, null, null, null,
+                        null, null, null, null, null, null, null, null))
+                .stream().forEach(text -> {
+                    System.out.printf("%-15s", text.getId());
+                    System.out.printf("%-15s", text.getCarId());
+                    System.out.printf("%-30s", text.getRentStart());
+                    System.out.printf("%-30s", text.getRentFinish());
+                    System.out.printf("%-15s", text.getEmployeeId());
+                    System.out.printf("%-15s", text.getCustomerId());
+                    System.out.printf("%-15s", text.getCustomerType());
+                    System.out.printf("%-30s", text.getCustomerCompanyName());
+                    System.out.printf("%-15s", text.getCustomerTaxNumber());
+                    System.out.printf("%-15s", text.getCustomerFirstName());
+                    System.out.printf("%-15s", text.getCustomerLastName());
+                    System.out.printf("%-15s", text.getCustomerPesel());
+                    System.out.printf("%-15s", text.getCustomerHouseNumber());
+                    System.out.printf("%-15s", text.getCustomerFlatNumber());
+                    System.out.printf("%-25s", text.getCustomerStreetName());
+                    System.out.printf("%-15s", text.getCustomerCity());
+                    System.out.printf("%-15s", text.getCustomerPostCode());
+                    System.out.println("");
+                });
     }
 
-    private static void chooseGetIdSubMenuNumber(MenuItem chosenMenu) {
-        switch (chosenMenu) {
-            case 1:
-                System.out.println(carService.getId(id()));
-                break;
-            case 2:
-                System.out.println(brandService.getId(id()));
-                break;
-            case 3:
-                System.out.println(modelService.getId(id()));
-                break;
-            case 4:
-                System.out.println(employeeService.getId(id()));
-                break;
-            case 5:
-                System.out.println(customerService.getId(id()));
-                break;
-            case 6:
-                System.out.println(rentInformationService.getId(id()));
-                break;
-        }
+    private static void printCustomer(){
+        System.out.printf("%-15s", "Id:");
+        System.out.printf("%-15s", "Typ:");
+        System.out.printf("%-30s", "Nazwa firmy");
+        System.out.printf("%-15s", "Numer tax");
+        System.out.printf("%-15s", "Imię:");
+        System.out.printf("%-15s", "Nazwisko:");
+        System.out.printf("%-15s", "Pesel:");
+        System.out.printf("%-15s", "Nr domu:");
+        System.out.printf("%-15s", "Nr miesz.:");
+        System.out.printf("%-25s", "Ulica:");
+        System.out.printf("%-15s", "Miasto:");
+        System.out.printf("%-15s", "Kod pocztowy:");
+        System.out.println("");
+        customerService.find(new Customer(null, null, null, null, null, null, null, null, null, null, null))
+                .stream().forEach(text -> {
+                    System.out.printf("%-15s", text.getId());
+                    System.out.printf("%-15s", text.getType());
+                    System.out.printf("%-30s", text.getCompanyName());
+                    System.out.printf("%-15s", text.getTaxNumber());
+                    System.out.printf("%-15s", text.getFirstName());
+                    System.out.printf("%-15s", text.getLastName());
+                    System.out.printf("%-15s", text.getPesel());
+                    System.out.printf("%-15s", text.getHouseNumber());
+                    System.out.printf("%-15s", text.getFlatNumber());
+                    System.out.printf("%-25s", text.getStreetName());
+                    System.out.printf("%-15s", text.getCity());
+                    System.out.printf("%-15s", text.getPostCode());
+                    System.out.println("");
+                });
     }
 
-    private static void printResults(MenuItem chosenMenu) {
-        switch (chosenMenu) {
-            case 1:
-                carService.find(car()).stream().forEach(System.out::println);
-                break;
-            case 2:
-                brandService.find(brand()).stream().forEach(System.out::println);
-                break;
-            case 3:
-                modelService.find(model()).stream().forEach(System.out::println);
-                break;
-            case 4:
-                employeeService.find(employee()).stream().forEach(System.out::println);
-                break;
-            case 5:
-                customerService.find(customer()).stream().forEach(System.out::println);
-                break;
-            case 6:
-                rentInformationService.find(rentInformation()).stream().forEach(System.out::println);
-                break;
-        }
+    private static void printEmployee(){
+        System.out.printf("%-15s", "Id:");
+        System.out.printf("%-15s", "Imię:");
+        System.out.printf("%-15s", "Nazwisko:");
+        System.out.printf("%-15s", "Pesel:");
+        System.out.printf("%-15s", "Nr domu:");
+        System.out.printf("%-15s", "Nr miesz.:");
+        System.out.printf("%-25s", "Ulica:");
+        System.out.printf("%-15s", "Miasto:");
+        System.out.printf("%-15s", "Kod pocztowy:");
+        System.out.println("");
+        employeeService.find(new Employee(null, null, null, null, null, null, null, null)).stream()
+                .forEach(text -> {
+                    System.out.printf("%-15s", text.getId());
+                    System.out.printf("%-15s", text.getFirstName());
+                    System.out.printf("%-15s", text.getLastName());
+                    System.out.printf("%-15s", text.getPesel());
+                    System.out.printf("%-15s", text.getHouseNumber());
+                    System.out.printf("%-15s", text.getFlatNumber());
+                    System.out.printf("%-25s", text.getStreetName());
+                    System.out.printf("%-15s", text.getCity());
+                    System.out.printf("%-15s", text.getPostCode());
+                    System.out.println("");
+                });
     }
 
-    private static void chooseUpdateSubMenuNumber(MenuItem chosenMenu) {
-        switch (chosenMenu) {
-            case 1:
-                carService.update(id(), car());
-                break;
-            case 2:
-                brandService.update(id(), brand());
-                break;
-            case 3:
-                modelService.update(id(), model());
-                break;
-            case 4:
-                employeeService.update(id(), employee());
-                break;
-            case 5:
-                customerService.update(id(), customer());
-                break;
-            case 6:
-                rentInformationService.update(id(), rentInformation());
-                break;
-        }
+    private static void printCar(){
+        System.out.printf("%-5s", "Id:");
+        System.out.printf("%-15s", "Reg nr:");
+        System.out.printf("%-15s", "Numer Vin:");
+        System.out.printf("%-15s", "Data zakupu:");
+        System.out.printf("%-15s", "Marka id:");
+        System.out.printf("%-15s", "Model id:");
+        System.out.println("");
+        carService.find(new Car(null, null, null, null, null))
+                .stream().forEach(text -> {
+                    System.out.printf("%-5s", text.getId());
+                    System.out.printf("%-15s", text.getRegistrationPlate());
+                    System.out.printf("%-15s", text.getVinNumber());
+                    System.out.printf("%-15s", text.getPurchaseDate());
+                    System.out.printf("%-15s", text.getBrandId());
+                    System.out.printf("%-15s", text.getModelId());
+                    System.out.println("");
+                });
     }
 
-    private static void chooseDeleteSubMenuNumber(MenuItem chosenMenu) {
-        switch (chosenMenu) {
-            case 1:
-                carService.remove(id());
-                break;
-            case 2:
-                brandService.remove(id());
-                break;
-            case 3:
-                modelService.remove(id());
-                break;
-            case 4:
-                employeeService.remove(id());
-                break;
-            case 5:
-                customerService.remove(id());
-                break;
-            case 6:
-                rentInformationService.remove(id());
-                break;
-        }
+    private static void printBrand(){
+        System.out.printf("%-15s", "Id:");
+        System.out.printf("%-15s", "Marka:");
+        System.out.println("");
+        brandService.find(new Brand(null)).stream()
+                .forEach(text -> {
+                    System.out.printf("%-15s", text.getId());
+                    System.out.printf("%-15s", text.getName());
+                    System.out.println("");
+                });
     }
 
-    private static Car car() {
+    private static void printModel(){
+        System.out.printf("%-15s", "Id:");
+        System.out.printf("%-15s", "Marka id:");
+        System.out.printf("%-15s", "Model:");
+        System.out.println("");
+        modelService.find(new Model(null, null)).stream()
+                .forEach(text->{System.out.printf("%-15s", text.getId());
+                    System.out.printf("%-15s", text.getBrandId());
+                    System.out.printf("%-15s", text.getName());
+                    System.out.println("");});
+    }
+
+    private static Car car(Boolean fullInformation) {
         keyboard.nextLine();
         System.out.println("Podaj numer rejestracyjny");
         String regPlate = keyboard.nextLine();
@@ -241,23 +379,41 @@ public class Main {
         System.out.println("dzien:");
         int day = keyboard.nextInt();
         System.out.println("Podaj marke:");
-        int brand = keyboard.nextInt();
+        int brand;
+        if (fullInformation == true) {
+            printBrand();
+            brand = keyboard.nextInt();
+        } else {
+            brand = keyboard.nextInt();
+        }
         System.out.println("Podaj model");
-        int model = keyboard.nextInt();
+        int model;
+        if (fullInformation == true) {
+            printModel();
+            model = keyboard.nextInt();
+        } else {
+            model = keyboard.nextInt();
+        }
         return new Car(regPlate, vinNumber, LocalDate.of(year, month, day), brand, model);
     }
 
     private static Brand brand() {
         keyboard.nextLine();
         System.out.println("Podaj marke:");
-        String name = keyboard.nextLine();
+        String name = name = keyboard.nextLine();
         return new Brand(name);
     }
 
-    private static Model model() {
+    private static Model model(Boolean fullInformation) {
         keyboard.nextLine();
+        Integer brandId;
         System.out.println("Podaj Id marki:");
-        Integer brandId = keyboard.nextInt();
+        if (fullInformation == true) {
+            printBrand();
+            brandId = keyboard.nextInt();
+        } else {
+            brandId = keyboard.nextInt();
+        }
         keyboard.nextLine();
         System.out.println("Podaj nazwe:");
         String name = keyboard.nextLine();
@@ -308,23 +464,42 @@ public class Main {
         String streetName = keyboard.nextLine();
         System.out.println("Podaj miasto:");
         String city = keyboard.nextLine();
-        System.out.println("podaj kod pocztowy:");
+        System.out.println("Podaj kod pocztowy:");
         String postCode = keyboard.nextLine();
         return new Employee(firstName, lastName, pesel, houseNumber, flatNumber, streetName, city, postCode);
     }
 
-    private static RentInformation rentInformation() {
+    private static RentInformation rentInformation(Boolean fullInformation) {
         keyboard.nextLine();
+        Integer carId;
         System.out.println("Podaj id samochodu:");
-        Integer carId = keyboard.nextInt();
+        if (fullInformation == true) {
+            printCar();
+            carId = keyboard.nextInt();
+        } else {
+            carId = keyboard.nextInt();
+        }
         System.out.println("Podaj date rozpoczecia");
         LocalDateTime rentStart = dateTime();
         System.out.println("Podaj date zakonczenia:");
         LocalDateTime rentFinish = dateTime();
+        Integer employeeId;
         System.out.println("Podaj Id pracownika:");
-        Integer employeeId = keyboard.nextInt();
+        if (fullInformation == true){
+            printRentInformation();
+            employeeId = keyboard.nextInt();
+        }
+        else {
+            employeeId = keyboard.nextInt();
+        }
+        Integer customerId;
         System.out.println("Podaj Id klienta:");
-        Integer customerId = keyboard.nextInt();
+        if (fullInformation == true){
+            printRentInformation();
+            customerId = keyboard.nextInt();
+        }else {
+            customerId = keyboard.nextInt();
+        }
         keyboard.nextLine();
         System.out.println("Podaj typ:");
         String customerType = keyboard.nextLine();
@@ -382,23 +557,74 @@ public class Main {
     }
 
     private static MenuItem chooseMenu() {
+        System.out.println("Podaj numer z menu:");
         Integer chooseMenu = keyboard.nextInt();
         return prepareMenuItem(chooseMenu);
     }
 
-    private static MenuItem prepareMenuItem(Integer chosenMenu){
-        switch (chosenMenu){
+    private static MenuItem prepareMenuItem(Integer chosenMenu) {
+        switch (chosenMenu) {
             case 1:
-                return MenuItem.ADD;
+                return MenuItem.ADD_CAR;
             case 2:
-                return MenuItem.CHANGE;
+                return MenuItem.FIND_CAR;
             case 3:
-                return MenuItem.FIND_BY_ID;
+                return MenuItem.FIND_BY_ID_CAR;
             case 4:
-                return MenuItem.FIND;
+                return MenuItem.UPDATE_CAR;
             case 5:
-                return MenuItem.DELETE;
+                return MenuItem.DELETE_CAR;
             case 6:
+                return MenuItem.ADD_BRAND;
+            case 7:
+                return MenuItem.FIND_BRAND;
+            case 8:
+                return MenuItem.FIND_BY_ID_BRAND;
+            case 9:
+                return MenuItem.UPDATE_BRAND;
+            case 10:
+                return MenuItem.DELETE_BRAND;
+            case 11:
+                return MenuItem.ADD_MODEL;
+            case 12:
+                return MenuItem.FIND_MODEL;
+            case 13:
+                return MenuItem.FIND_BY_ID_MODEL;
+            case 14:
+                return MenuItem.UPDATE_MODEL;
+            case 15:
+                return MenuItem.DELETE_MODEL;
+            case 16:
+                return MenuItem.ADD_EMPLOYEE;
+            case 17:
+                return MenuItem.FIND_EMPLOYEE;
+            case 18:
+                return MenuItem.FIND_BY_ID_EMPLOYEE;
+            case 19:
+                return MenuItem.UPDATE_EMPLOYEE;
+            case 20:
+                return MenuItem.DELETE_EMPLOYEE;
+            case 21:
+                return MenuItem.ADD_CUSTOMER;
+            case 22:
+                return MenuItem.FIND_CUSTOMER;
+            case 23:
+                return MenuItem.FIND_BY_ID_CUSTOMER;
+            case 24:
+                return MenuItem.UPDATE_CUSTOMER;
+            case 25:
+                return MenuItem.DELETE_CUSTOMER;
+            case 26:
+                return MenuItem.ADD_RENT;
+            case 27:
+                return MenuItem.FIND_RENT;
+            case 28:
+                return MenuItem.FIND_BY_ID_RENT;
+            case 29:
+                return MenuItem.UPDATE_RENT;
+            case 30:
+                return MenuItem.DELETE_RENT;
+            case 31:
                 return MenuItem.EXIT;
             default:
                 throw new IllegalArgumentException();

@@ -160,27 +160,24 @@ public class RentInformation {
 
     @Override
     public String toString() {
-        return "RentInformation{" +
-                "id=" + id +
-                ", carId=" + carId +
-                ", rentStart=" + rentStart +
-                ", rentFinish=" + rentFinish +
-                ", employeeId=" + employeeId +
-                ", customerId=" + customerId +
-                ", customerType='" + customerType + '\'' +
-                ", customerCompanyName='" + customerCompanyName + '\'' +
-                ", customerTaxNumber='" + customerTaxNumber + '\'' +
-                ", customerFirstName='" + customerFirstName + '\'' +
-                ", customerLastName='" + customerLastName + '\'' +
-                ", customerPesel='" + customerPesel + '\'' +
-                ", customerHouseNumber='" + customerHouseNumber + '\'' +
-                ", customerFlatNumber='" + customerFlatNumber + '\'' +
-                ", customerStreetName='" + customerStreetName + '\'' +
-                ", customerCity='" + customerCity + '\'' +
-                ", customerPostCode='" + customerPostCode + '\'' +
-                ", rentNetPrice=" + rentNetPrice +
-                ", rentPercent=" + rentPercent +
-                ", rentGrossPrice=" + rentGrossPrice +
-                '}';
+        return id + carId +
+                 "" + rentStart +
+                rentFinish +
+                employeeId +
+                customerId +
+                customerType +
+                customerCompanyName +
+                customerTaxNumber +
+                customerFirstName +
+                customerLastName +
+                customerPesel +
+                customerHouseNumber +
+                customerFlatNumber +
+                customerStreetName +
+                customerCity +
+                customerPostCode +
+                rentNetPrice +
+                rentPercent +
+                rentGrossPrice;
     }
 }
