@@ -43,6 +43,14 @@ public class Customer {
         this.postCode = postCode;
     }
 
+    public Customer(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public Customer(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

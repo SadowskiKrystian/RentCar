@@ -1,32 +1,46 @@
 package com.ksprogramming.car;
 
+import com.ksprogramming.brand.Brand;
+import com.ksprogramming.model.Model;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-public class Car {
+public class Car{
     private Integer id;
     private String registrationPlate;
     private String vinNumber;
     private LocalDate purchaseDate;
-    private Integer brandId;
-    private Integer modelId;
+    private Brand nameBrand;
+    private Model nameModel;
 
-    public Car(Integer id, String registrationPlate, String vinNumber, LocalDate purchaseDate, Integer brandId, Integer modelId) {
+    public Car() {
+    }
+
+    public Car(Integer id, String registrationPlate, String vinNumber, LocalDate purchaseDate, Brand nameBrand, Model nameModel) {
         this.id = id;
         this.registrationPlate = registrationPlate;
         this.vinNumber = vinNumber;
         this.purchaseDate = purchaseDate;
-        this.brandId = brandId;
-        this.modelId = modelId;
+        this.nameBrand = nameBrand;
+        this.nameModel = nameModel;
     }
 
-    public Car(String registrationPlate, String vinNumber, LocalDate purchaseDate, Integer brandId, Integer modelId) {
+    public Car(String registrationPlate, String vinNumber, LocalDate purchaseDate, Brand nameBrand, Model nameModel) {
         this.registrationPlate = registrationPlate;
         this.vinNumber = vinNumber;
         this.purchaseDate = purchaseDate;
-        this.brandId = brandId;
-        this.modelId = modelId;
+        this.nameBrand = nameBrand;
+        this.nameModel = nameModel;
+    }
+
+    public Car(String registrationPlate) {
+        this.registrationPlate = registrationPlate;
+    }
+
+    public Car(Integer id) {
+        this.id = id;
     }
 
     public Integer getId() {
@@ -45,16 +59,16 @@ public class Car {
         return purchaseDate;
     }
 
-    public Integer getBrandId() {
-        return brandId;
+    public Brand getNameBrand() {
+        return nameBrand;
     }
 
-    public Integer getModelId() {
-        return modelId;
+    public Model getNameModel() {
+        return nameModel;
     }
 
     @Override
     public String toString() {
-        return id + registrationPlate + vinNumber + purchaseDate + brandId  + modelId;
+        return id + registrationPlate + vinNumber + purchaseDate + nameBrand.getName() + nameModel.getName();
     }
 }

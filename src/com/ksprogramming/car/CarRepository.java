@@ -3,6 +3,8 @@ package com.ksprogramming.car;
 import com.ksprogramming.CommonRepository;
 import com.ksprogramming.DatabaseException;
 import com.ksprogramming.DateTimeUtil;
+import com.ksprogramming.brand.Brand;
+import com.ksprogramming.model.Model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,13 +28,16 @@ public class CarRepository {
         ResultSet resultSet = null;
 
         try {
-            preparedStatement = connection.prepareStatement("select * from car where id = ?");
+            preparedStatement = connection.prepareStatement("select * from car as c " +
+                    "join brand as b on c.brand_id = b.id " +
+                    "join model as m on b.id  = m.brand_id " +
+                    "where c.id = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 return new Car(resultSet.getInt("id"), resultSet.getString("registration_plate"),
                         resultSet.getString("vin_number"), resultSet.getDate("purchase_date").toLocalDate(),
-                        resultSet.getInt("brand_id"), resultSet.getInt("model_id"));
+                        new Brand(resultSet.getString("b.name")), new Model(resultSet.getString("m.name")));
             }
         }catch (SQLException sqlException){
             throw new DatabaseException(sqlException.getMessage(), sqlException);
@@ -69,8 +74,8 @@ public class CarRepository {
             preparedStatement.setString(1, car.getRegistrationPlate());
             preparedStatement.setString(2, car.getVinNumber());
             preparedStatement.setDate(3, java.sql.Date.valueOf(car.getPurchaseDate()));
-            preparedStatement.setInt(4, car.getBrandId());
-            preparedStatement.setInt(5, car.getModelId());
+            preparedStatement.setInt(4, car.getNameBrand().getId());
+            preparedStatement.setInt(5, car.getNameModel().getId());
             preparedStatement.executeUpdate();
         }catch (SQLException sqlException){
             throw new DatabaseException(sqlException.getMessage(), sqlException);
@@ -88,8 +93,8 @@ public class CarRepository {
             preparedStatement.setString(1, car.getRegistrationPlate());
             preparedStatement.setString(2, car.getVinNumber());
             preparedStatement.setDate(3, DateTimeUtil.convertToLocalDate(car.getPurchaseDate()));
-            preparedStatement.setInt(4, car.getBrandId());
-            preparedStatement.setInt(5, car.getModelId());
+            preparedStatement.setInt(4, car.getNameBrand().getId());
+            preparedStatement.setInt(5, car.getNameModel().getId());
             preparedStatement.setInt(6, id);
             preparedStatement.executeUpdate();
         }catch (SQLException sqlException){
@@ -114,12 +119,12 @@ public class CarRepository {
 
     private List<Car> prepareResultsSet(ResultSet resultSet) throws SQLException {
         List<Car> addBrand = new ArrayList<>();
-        while (resultSet.next()){
-            addBrand.add(new Car(resultSet.getInt("id"), resultSet.getString("registration_plate"),
-                    resultSet.getString("vin_number"), resultSet.getDate("purchase_date").toLocalDate(),
-                    resultSet.getInt("brand_id"), resultSet.getInt("model_id")));
-        }
-        return addBrand;
+            while (resultSet.next()) {
+                addBrand.add(new Car(resultSet.getInt("id"), resultSet.getString("registration_plate"),
+                        resultSet.getString("vin_number"), resultSet.getDate("purchase_date").toLocalDate(),
+                        new Brand(resultSet.getString("b.name")), new Model(resultSet.getString("m.name"))));
+            }
+            return addBrand;
     }
 
     private void setParameters(PreparedStatement preparedStatement, Car car) throws SQLException {
@@ -133,16 +138,19 @@ public class CarRepository {
         if (car.getPurchaseDate() != null){
             preparedStatement.setDate(index++, java.sql.Date.valueOf(car.getPurchaseDate()));
         }
-        if (car.getBrandId() != null){
-            preparedStatement.setInt(index++, car.getBrandId());
+        if (car.getNameBrand() != null && car.getNameBrand().getId() != null){
+            preparedStatement.setInt(index++, car.getNameBrand().getId());
         }
-        if (car.getModelId() != null){
-            preparedStatement.setInt(index, car.getModelId());
+        if (car.getNameModel() != null && car.getNameModel().getId() != null){
+            preparedStatement.setInt(index, car.getNameModel().getId());
         }
     }
 
     private String prepareQuery(Car car) {
-        String query = "select * from car where 1=1 ";
+        String query = "select * from car as c " +
+                "join brand as b on c.brand_id = b.id " +
+                "join model as m on b.id  = m.brand_id " +
+                "where 1=1 ";
         if (car.getRegistrationPlate() != null){
             query = query + "and registration_plate = ?";
         }
@@ -152,10 +160,10 @@ public class CarRepository {
         if (car.getPurchaseDate() != null){
             query = query + "and purchase_date = ?";
         }
-        if (car.getBrandId() != null){
+        if (car.getNameBrand() != null && car.getNameBrand().getId() != null){
             query = query = "and brand_id = ?";
         }
-        if (car.getModelId() != null){
+        if (car.getNameModel() != null && car.getNameModel().getId() != null){
             query = query + "and model_id = ?";
         }
         return query;

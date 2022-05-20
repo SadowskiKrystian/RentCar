@@ -26,11 +26,13 @@ public class ModelRepository {
         ResultSet resultSet = null;
 
         try {
-            preparedStatement = connection.prepareStatement("select * from model where id = ?");
+            preparedStatement = connection.prepareStatement("select * from model as m " +
+                    "join brand as b on m.brand_id  = b.id " +
+                    "where m.id = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                return new Model(resultSet.getInt("id"), resultSet.getInt("brand_id"), resultSet.getString("name"));
+                return new Model(resultSet.getInt("id"), new Brand(resultSet.getString("b.name")), resultSet.getString("m.name"));
             }
         }catch (SQLException sqlException){
             throw new DatabaseException(sqlException.getMessage(), sqlException);
@@ -63,7 +65,7 @@ public class ModelRepository {
 
         try {
             preparedStatement = connection.prepareStatement("insert into model(brand_id, name) values (?, ?)");
-            preparedStatement.setInt(1, model.getBrandId());
+            preparedStatement.setInt(1, model.getBrand().getId());
             preparedStatement.setString(2, model.getName());
             preparedStatement.executeUpdate();
         }catch (SQLException sqlException){
@@ -78,7 +80,7 @@ public class ModelRepository {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement("update model set brand_id = ?, name = ? where id = ?");
-            preparedStatement.setInt(1, model.getBrandId());
+            preparedStatement.setInt(1, model.getBrand().getId());
             preparedStatement.setString(2, model.getName());
             preparedStatement.setInt(3, id);
             preparedStatement.executeUpdate();
@@ -105,15 +107,15 @@ public class ModelRepository {
     private List<Model> prepareResultsSet(ResultSet resultSet) throws SQLException {
         List<Model> addBrand = new ArrayList<>();
         while (resultSet.next()){
-            addBrand.add(new Model(resultSet.getInt("id"), resultSet.getInt("brand_id"), resultSet.getString("name")));
+            addBrand.add(new Model(resultSet.getInt("id"), new Brand(resultSet.getString("b.name")), resultSet.getString("m.name")));
         }
         return addBrand;
     }
 
     private void setParameters(PreparedStatement preparedStatement, Model model) throws SQLException {
         int index = 1;
-        if (model.getBrandId() != null) {
-            preparedStatement.setInt(index++, model.getBrandId());
+        if (model.getBrand() != null && model.getBrand().getId() != null) {
+            preparedStatement.setInt(index++, model.getBrand().getId());
         }
         if (model.getName() != null){
             preparedStatement.setString(index, model.getName());
@@ -121,8 +123,10 @@ public class ModelRepository {
     }
 
     private String prepareQuery(Model model) {
-        String query = "select * from model where 1=1 ";
-        if (model.getBrandId() != null) {
+        String query = "select * from brand as b " +
+                "join model as m on m.brand_id  = b.id " +
+                "where 1=1 ";
+        if (model.getBrand() != null && model.getBrand().getId() != null) {
             query = query + "and brand_id = ?";
         }
         if (model.getName() != null){

@@ -1,27 +1,44 @@
 package com.ksprogramming.model;
 
+import com.ksprogramming.brand.Brand;
+
 public class Model {
     private Integer id;
-    private Integer brandId;
+    private Brand brand;
     private String name;
 
-    public Model(Integer id, Integer brandId, String name) {
+    public Model() {
+    }
+
+    public Model(Integer id, Brand brand, String name) {
         this.id = id;
-        this.brandId = brandId;
+        this.brand = brand;
         this.name = name;
     }
 
-    public Model(Integer brandId, String name) {
-        this.brandId = brandId;
+    public Model(String name) {
         this.name = name;
+    }
+
+    public Model(Brand brand) {
+        this.brand = brand;
+    }
+
+    public Model(Brand brand, String name) {
+        this.brand = brand;
+        this.name = name;
+    }
+
+    public Model(Integer id) {
+        this.id = id;
     }
 
     public Integer getId() {
         return id;
     }
 
-    public Integer getBrandId() {
-        return brandId;
+    public Brand getBrand() {
+        return brand;
     }
 
     public String getName() {
@@ -30,6 +47,6 @@ public class Model {
 
     @Override
     public String toString() {
-        return id + "\t" + brandId + "\t\t\t " + name;
+        return id + brand.getName() + name;
     }
 }

@@ -34,6 +34,14 @@ public class Employee {
         this.postCode = postCode;
     }
 
+    public Employee(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public Employee(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }
