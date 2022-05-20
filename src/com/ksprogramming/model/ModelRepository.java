@@ -32,7 +32,7 @@ public class ModelRepository {
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                return new Model(resultSet.getInt("id"), new Brand(resultSet.getString("b.name")), resultSet.getString("m.name"));
+                return new Model(resultSet.getInt("m.id"), new Brand(resultSet.getString("b.name")), resultSet.getString("m.name"));
             }
         }catch (SQLException sqlException){
             throw new DatabaseException(sqlException.getMessage(), sqlException);
@@ -107,7 +107,7 @@ public class ModelRepository {
     private List<Model> prepareResultsSet(ResultSet resultSet) throws SQLException {
         List<Model> addBrand = new ArrayList<>();
         while (resultSet.next()){
-            addBrand.add(new Model(resultSet.getInt("id"), new Brand(resultSet.getString("b.name")), resultSet.getString("m.name")));
+            addBrand.add(new Model(resultSet.getInt("m.id"), new Brand(resultSet.getString("b.name")), resultSet.getString("m.name")));
         }
         return addBrand;
     }

@@ -35,7 +35,7 @@ public class CarRepository {
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                return new Car(resultSet.getInt("id"), resultSet.getString("registration_plate"),
+                return new Car(resultSet.getInt("c.id"), resultSet.getString("registration_plate"),
                         resultSet.getString("vin_number"), resultSet.getDate("purchase_date").toLocalDate(),
                         new Brand(resultSet.getString("b.name")), new Model(resultSet.getString("m.name")));
             }
@@ -120,7 +120,7 @@ public class CarRepository {
     private List<Car> prepareResultsSet(ResultSet resultSet) throws SQLException {
         List<Car> addBrand = new ArrayList<>();
             while (resultSet.next()) {
-                addBrand.add(new Car(resultSet.getInt("id"), resultSet.getString("registration_plate"),
+                addBrand.add(new Car(resultSet.getInt("c.id"), resultSet.getString("registration_plate"),
                         resultSet.getString("vin_number"), resultSet.getDate("purchase_date").toLocalDate(),
                         new Brand(resultSet.getString("b.name")), new Model(resultSet.getString("m.name"))));
             }

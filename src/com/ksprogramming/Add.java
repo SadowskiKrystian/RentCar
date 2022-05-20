@@ -21,7 +21,6 @@ public class Add {
     }
 
     public static Car addCar(Boolean fullInformation) {
-        keyboard.nextLine();
         System.out.println("Podaj numer rejestracyjny:");
         String regPlate = keyboard.nextLine();
         System.out.println("Podaj VIN number:");
@@ -45,7 +44,7 @@ public class Add {
         int idModel;
         if (fullInformation == true) {
             Header.displayModels();
-            print.printModels(new Model(idBrand));
+            print.printModels(new Model(new Brand(idBrand)));
             idModel = keyboard.nextInt();
         } else {
             idModel = keyboard.nextInt();
@@ -54,14 +53,12 @@ public class Add {
     }
 
     public static Brand addBrand() {
-        keyboard.nextLine();
         System.out.println("Podaj marke:");
         String name = name = keyboard.nextLine();
         return new Brand(name);
     }
 
     public static Model addModel(Boolean fullInformation) {
-        keyboard.nextLine();
         Integer brandId;
         System.out.println("Podaj Id marki:");
         if (fullInformation == true) {
@@ -78,7 +75,6 @@ public class Add {
     }
 
     public static Customer addCustomer() {
-        keyboard.nextLine();
         System.out.println("Podaj typ:");
         String type = keyboard.nextLine();
         System.out.println("Podaj nazwe firmy:");
@@ -106,7 +102,6 @@ public class Add {
     }
 
     public static Employee addEmployee() {
-        keyboard.nextLine();
         System.out.println("Podaj imie:");
         String firstName = keyboard.nextLine();
         System.out.println("Podaj nazwisko:");
@@ -127,7 +122,6 @@ public class Add {
     }
 
     public static RentInformation addRentInformation(Boolean fullInformation) {
-        keyboard.nextLine();
         Integer carId;
         System.out.println("Podaj id samochodu:");
         if (fullInformation == true) {
@@ -194,7 +188,6 @@ public class Add {
     }
 
     public static LocalDateTime addDateTime() {
-        keyboard.nextLine();
         System.out.println("Podaj rok:");
         Integer year = keyboard.nextInt();
         System.out.println("Podaj miesiac:");

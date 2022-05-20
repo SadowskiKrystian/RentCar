@@ -181,7 +181,7 @@ public class Print {
 
     public void printModels(Model model) {
         if (model.getBrand() != null) {
-            modelService.find(new Model(new Brand(model.getId()))).stream()
+            modelService.find(new Model(new Brand(model.getBrand().getId()))).stream()
                     .forEach(modelBrand -> {
                         System.out.printf("%-15s", modelBrand.getId());
                         System.out.printf("%-15s", modelBrand.getBrand().getName());
