@@ -9,8 +9,15 @@ public class Brand {
         this.name = name;
     }
 
+    public Brand(Integer id) {
+        this.id = id;
+    }
+
     public Brand(String name) {
         this.name = name;
+    }
+
+    public Brand() {
     }
 
     public Integer getId() {

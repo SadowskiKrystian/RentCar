@@ -38,6 +38,16 @@ public class Menu {
         this.rentInformationService = rentInformationService;
     }
 
+    private static void displayCar(Car car) {
+        System.out.printf("%-5s", car.getId());
+        System.out.printf("%-15s", car.getRegistrationPlate());
+        System.out.printf("%-15s", car.getVinNumber());
+        System.out.printf("%-15s", car.getPurchaseDate());
+        System.out.printf("%-15s", car.getBrand().getName());
+        System.out.printf("%-15s", car.getBrand().getName());
+        System.out.println("");
+    }
+
     public void showChoosenMenu() {
         while (exitApplication) {
             showMenu();
@@ -332,30 +342,30 @@ public class Menu {
     }
 
     private static void printCar() {
-        System.out.printf("%-5s", "Id:");
-        System.out.printf("%-15s", "Reg nr:");
-        System.out.printf("%-15s", "Numer Vin:");
-        System.out.printf("%-15s", "Data zakupu:");
-        System.out.printf("%-15s", "Marka id:");
-        System.out.printf("%-15s", "Model id:");
+        printCarsHeader("%-5s", "Id:", "Reg nr:", "Numer Vin:", "%-15s", "Data zakupu:", "Marka:", "Model:");
+        printCars();
+    }
+
+    private static void printCars() {
+        carService.find(new Car())
+                .stream().forEach(Menu::displayCar);
+    }
+
+    private static void printCarsHeader(String s, String s2, String s3, String s4, String s5, String s6, String s7, String s8) {
+        System.out.printf(s, s2);
+        System.out.printf("%-15s", s3);
+        System.out.printf("%-15s", s4);
+        System.out.printf(s5, s6);
+        System.out.printf("%-15s", s7);
+        System.out.printf("%-15s", s8);
         System.out.println("");
-        carService.find(new Car(null, null, null, null, null))
-                .stream().forEach(text -> {
-                    System.out.printf("%-5s", text.getId());
-                    System.out.printf("%-15s", text.getRegistrationPlate());
-                    System.out.printf("%-15s", text.getVinNumber());
-                    System.out.printf("%-15s", text.getPurchaseDate());
-                    System.out.printf("%-15s", text.getBrandId());
-                    System.out.printf("%-15s", text.getModelId());
-                    System.out.println("");
-                });
     }
 
     private static void printBrand() {
         System.out.printf("%-15s", "Id:");
         System.out.printf("%-15s", "Marka:");
         System.out.println("");
-        brandService.find(new Brand(null)).stream()
+        brandService.find(new Brand()).stream()
                 .forEach(text -> {
                     System.out.printf("%-15s", text.getId());
                     System.out.printf("%-15s", text.getName());
@@ -390,22 +400,22 @@ public class Menu {
         System.out.println("dzien:");
         int day = keyboard.nextInt();
         System.out.println("Podaj marke:");
-        int brand;
+        int brandId;
         if (fullInformation == true) {
             printBrand();
-            brand = keyboard.nextInt();
+            brandId = keyboard.nextInt();
         } else {
-            brand = keyboard.nextInt();
+            brandId = keyboard.nextInt();
         }
         System.out.println("Podaj model");
-        int model;
+        int modelId;
         if (fullInformation == true) {
             printModel();
-            model = keyboard.nextInt();
+            modelId = keyboard.nextInt();
         } else {
-            model = keyboard.nextInt();
+            modelId = keyboard.nextInt();
         }
-        return new Car(regPlate, vinNumber, LocalDate.of(year, month, day), brand, model);
+        return new Car(regPlate, vinNumber, LocalDate.of(year, month, day), new Brand(brandId), new Model(modelId));
     }
 
     private static Brand brand() {

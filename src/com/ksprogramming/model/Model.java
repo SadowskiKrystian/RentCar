@@ -16,6 +16,14 @@ public class Model {
         this.name = name;
     }
 
+    public Model(String name) {
+        this.name = name;
+    }
+
+    public Model(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

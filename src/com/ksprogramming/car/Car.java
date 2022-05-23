@@ -1,32 +1,44 @@
 package com.ksprogramming.car;
 
+import com.ksprogramming.brand.Brand;
+import com.ksprogramming.model.Model;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 public class Car {
     private Integer id;
     private String registrationPlate;
     private String vinNumber;
     private LocalDate purchaseDate;
-    private Integer brandId;
-    private Integer modelId;
+    private Brand brand;
+    private Model model;
 
-    public Car(Integer id, String registrationPlate, String vinNumber, LocalDate purchaseDate, Integer brandId, Integer modelId) {
+    public Car() {
+    }
+
+    public Car(Integer id, String registrationPlate, String vinNumber, LocalDate purchaseDate, Brand brand, Model model) {
         this.id = id;
         this.registrationPlate = registrationPlate;
         this.vinNumber = vinNumber;
         this.purchaseDate = purchaseDate;
-        this.brandId = brandId;
-        this.modelId = modelId;
+        this.brand = brand;
+        this.model = model;
     }
 
-    public Car(String registrationPlate, String vinNumber, LocalDate purchaseDate, Integer brandId, Integer modelId) {
+    public Car(String registrationPlate, String vinNumber, LocalDate purchaseDate, Brand brand, Model model) {
         this.registrationPlate = registrationPlate;
         this.vinNumber = vinNumber;
         this.purchaseDate = purchaseDate;
-        this.brandId = brandId;
-        this.modelId = modelId;
+        this.brand = brand;
+        this.model = model;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public Model getModel() {
+        return model;
     }
 
     public Integer getId() {
@@ -45,16 +57,15 @@ public class Car {
         return purchaseDate;
     }
 
-    public Integer getBrandId() {
-        return brandId;
-    }
-
-    public Integer getModelId() {
-        return modelId;
-    }
-
     @Override
     public String toString() {
-        return id + registrationPlate + vinNumber + purchaseDate + brandId  + modelId;
+        return "Car{" +
+                "id=" + id +
+                ", registrationPlate='" + registrationPlate + '\'' +
+                ", vinNumber='" + vinNumber + '\'' +
+                ", purchaseDate=" + purchaseDate +
+                ", brand=" + brand +
+                ", model=" + model +
+                '}';
     }
 }

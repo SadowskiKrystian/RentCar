@@ -13,7 +13,7 @@ public class CarService {
     }
 
     public Car getId(Integer id){
-        return carRepository.getId(id);
+        return carRepository.get(id);
     }
     public List<Car> find(Car car){
         return carRepository.find(car);
