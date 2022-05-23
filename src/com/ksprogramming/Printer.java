@@ -13,7 +13,7 @@ import com.ksprogramming.model.ModelService;
 import com.ksprogramming.rentinformation.RentInformation;
 import com.ksprogramming.rentinformation.RentInformationService;
 
-public class Print {
+public class Printer {
     private static CustomerService customerService = null;
     private static EmployeeService employeeService = null;
     private static BrandService brandService = null;
@@ -21,8 +21,8 @@ public class Print {
     private static CarService carService = null;
     private static RentInformationService rentInformationService = null;
 
-    public Print(CustomerService customerService, EmployeeService employeeService,
-                 BrandService brandService, ModelService modelService, CarService carService, RentInformationService rentInformationService) {
+    public Printer(CustomerService customerService, EmployeeService employeeService,
+                   BrandService brandService, ModelService modelService, CarService carService, RentInformationService rentInformationService) {
         this.customerService = customerService;
         this.employeeService = employeeService;
         this.brandService = brandService;
@@ -32,11 +32,10 @@ public class Print {
     }
 
     public void printRentInformation() {
-        rentInformationService.find(new RentInformation(null, null, null, null, null, null, null, null, null, null, null, null,
-                        null, null, null, null, null, null, null, null))
+        rentInformationService.find(new RentInformation())
                 .stream().forEach(text -> {
                     System.out.printf("%-15s", text.getId());
-                    System.out.printf("%-15s", text.getCar().getNameBrand().getName());
+                    System.out.printf("%-15s", text.getCar().getBrand().getName());
                     System.out.printf("%-30s", text.getRentStart());
                     System.out.printf("%-30s", text.getRentFinish());
                     System.out.printf("%-15s", text.getEmployee().getFirstName());
@@ -58,7 +57,7 @@ public class Print {
 
     public void printIdRentInformation(Integer id) {
                     System.out.printf("%-15s", rentInformationService.getId(id));
-                    System.out.printf("%-15s", rentInformationService.getId(id).getCar().getNameBrand().getName());
+                    System.out.printf("%-15s", rentInformationService.getId(id).getCar().getBrand().getName());
                     System.out.printf("%-30s", rentInformationService.getId(id).getRentStart());
                     System.out.printf("%-30s", rentInformationService.getId(id).getRentFinish());
                     System.out.printf("%-15s", rentInformationService.getId(id).getEmployee().getFirstName());
@@ -141,26 +140,33 @@ public class Print {
 
     }
 
-    public void printCar() {
+    public void printCars() {
         carService.find(new Car(null, null, null, null, null))
                 .stream().forEach(text -> {
-                    System.out.printf("%-5s", text.getId());
-                    System.out.printf("%-15s", text.getRegistrationPlate());
-                    System.out.printf("%-30s", text.getVinNumber());
-                    System.out.printf("%-15s", text.getPurchaseDate());
-                    System.out.printf("%-15s", text.getNameBrand().getName());
-                    System.out.printf("%-15s", text.getNameModel().getName());
-                    System.out.println("");
+                    printCarDetails(text);
                 });
     }
 
-    public void printIdCar(Integer id) {
-        System.out.printf("%-5s", carService.getId(id).getId());
-        System.out.printf("%-15s", carService.getId(id).getRegistrationPlate());
-        System.out.printf("%-30s", carService.getId(id).getVinNumber());
-        System.out.printf("%-15s", carService.getId(id).getPurchaseDate());
-        System.out.printf("%-15s", carService.getId(id).getNameBrand().getName());
-        System.out.printf("%-15s", carService.getId(id).getNameModel().getName());
+    public void printCar(Integer id) {
+        Car car = carService.get(id);
+        if (car != null) {
+            printCarDetails(car);
+        }else{
+            printMissingCarMessage();
+        }
+    }
+
+    private void printMissingCarMessage() {
+        System.out.println("Brak danych o samochodzie o podanym id.");
+    }
+
+    private void printCarDetails(Car car) {
+        System.out.printf("%-5s", car.getId());
+        System.out.printf("%-15s", car.getRegistrationPlate());
+        System.out.printf("%-30s", car.getVinNumber());
+        System.out.printf("%-15s", car.getPurchaseDate());
+        System.out.printf("%-15s", car.getBrand().getName());
+        System.out.printf("%-15s", car.getModel().getName());
         System.out.println("");
     }
 

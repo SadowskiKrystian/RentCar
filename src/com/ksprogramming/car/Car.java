@@ -33,6 +33,14 @@ public class Car{
         this.model = model;
     }
 
+    public Car(String registrationPlate) {
+        this.registrationPlate = registrationPlate;
+    }
+
+    public Car(Integer id) {
+        this.id = id;
+    }
+
     public Brand getBrand() {
         return brand;
     }

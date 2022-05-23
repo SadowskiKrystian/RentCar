@@ -1,21 +1,13 @@
 package com.ksprogramming;
 
-import com.ksprogramming.brand.Brand;
 import com.ksprogramming.brand.BrandService;
-import com.ksprogramming.car.Car;
 import com.ksprogramming.car.CarService;
-import com.ksprogramming.customer.Customer;
 import com.ksprogramming.customer.CustomerService;
-import com.ksprogramming.employee.Employee;
 import com.ksprogramming.employee.EmployeeService;
 import com.ksprogramming.model.Model;
 import com.ksprogramming.model.ModelService;
-import com.ksprogramming.rentinformation.RentInformation;
 import com.ksprogramming.rentinformation.RentInformationService;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class Menu {
@@ -27,7 +19,7 @@ public class Menu {
     private static ModelService modelService = null;
     private static CarService carService = null;
     private static RentInformationService rentInformationService = null;
-    private  static Print print = null;
+    private  static Printer print = null;
     private static Add add = null;
 
     public Menu(CustomerService customerService, EmployeeService employeeService,
@@ -38,7 +30,7 @@ public class Menu {
         this.modelService = modelService;
         this.carService = carService;
         this.rentInformationService = rentInformationService;
-        print = new Print(customerService, employeeService, brandService, modelService, carService, rentInformationService);
+        print = new Printer(customerService, employeeService, brandService, modelService, carService, rentInformationService);
         add = new Add(print);
     }
 
@@ -62,22 +54,22 @@ public class Menu {
             case FIND_BY_ID_CAR:
                 id = id();
                 Header.displayCar();
-                print.printIdCar(id);
+                print.printCar(id);
                 stopLoop();
                 break;
             case UPDATE_CAR:
                 Header.displayCar();
-                print.printCar();
+                print.printCars();
                 carService.update(id(), Add.addCar(true));
                 break;
             case DELETE_CAR:
                 Header.displayCar();
-                print.printCar();
+                print.printCars();
                 carService.remove(id());
                 break;
             case SHOW_CAR:
                 Header.displayCar();
-                print.printCar();
+                print.printCars();
                 stopLoop();
                 break;
             case ADD_BRAND:

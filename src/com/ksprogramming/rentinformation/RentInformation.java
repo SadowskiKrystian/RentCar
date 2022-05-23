@@ -84,6 +84,9 @@ public class RentInformation {
         this.rentGrossPrice = rentGrossPrice;
     }
 
+    public RentInformation() {
+    }
+
     public Integer getId() {
         return id;
     }

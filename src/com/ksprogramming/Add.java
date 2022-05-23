@@ -14,9 +14,9 @@ import java.util.Scanner;
 
 public class Add {
     private static Scanner keyboard = new Scanner(System.in);
-    private static Print print = null;
+    private static Printer print = null;
 
-    public Add(Print print) {
+    public Add(Printer print) {
         this.print = print;
     }
 
@@ -126,7 +126,7 @@ public class Add {
         System.out.println("Podaj id samochodu:");
         if (fullInformation == true) {
             Header.displayCar();
-            print.printCar();
+            print.printCars();
             carId = keyboard.nextInt();
         } else {
             carId = keyboard.nextInt();
