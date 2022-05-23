@@ -27,6 +27,8 @@ public class Menu {
     private static ModelService modelService = null;
     private static CarService carService = null;
     private static RentInformationService rentInformationService = null;
+    private  static Print print = null;
+    private static Add add = null;
 
     public Menu(CustomerService customerService, EmployeeService employeeService,
                 BrandService brandService, ModelService modelService, CarService carService, RentInformationService rentInformationService) {
@@ -36,200 +38,177 @@ public class Menu {
         this.modelService = modelService;
         this.carService = carService;
         this.rentInformationService = rentInformationService;
-    }
-
-    private static void displayCar(Car car) {
-        System.out.printf("%-5s", car.getId());
-        System.out.printf("%-15s", car.getRegistrationPlate());
-        System.out.printf("%-15s", car.getVinNumber());
-        System.out.printf("%-15s", car.getPurchaseDate());
-        System.out.printf("%-15s", car.getBrand().getName());
-        System.out.printf("%-15s", car.getBrand().getName());
-        System.out.println("");
+        print = new Print(customerService, employeeService, brandService, modelService, carService, rentInformationService);
+        add = new Add(print);
     }
 
     public void showChoosenMenu() {
         while (exitApplication) {
-            showMenu();
+            Header.showMenu();
             menu(chooseMenu());
         }
     }
 
-    private static void showMenu() {
-        System.out.println("Witamy w aplikacji do wynajmowania samochodow");
-        System.out.println("----------------------------------------------------------------------------------------------");
-        System.out.println("Wybierz z menu co chcesz zrobić:");
-        System.out.println("1 - Dodaj samochód\n" +
-                "2 - Znajdź samochód po danych\n" +
-                "3 - Znajdz samochód po Id\n" +
-                "4 - Zaktualizuj samochód\n" +
-                "5 - Usun samochód\n" +
-                "6 - Pokaż wszystkie samochody\n" +
-                "------------------------\n" +
-                "7 - Dodaj markę\n" +
-                "8 - Znajdź markę po danych\n" +
-                "9 - Znajdz markę po Id\n" +
-                "10 - Zaktualizuj markę\n" +
-                "11 - Usun markę\n" +
-                "12 - Pokaż wszystkie marki\n" +
-                "------------------------\n" +
-                "13 - Dodaj model\n" +
-                "14 - Znajdź model po danych\n" +
-                "15 - Znajdz model po Id\n" +
-                "16 - Zaktualizuj model\n" +
-                "17 - Usun model\n" +
-                "18 - Pokaż wszystkie modele\n" +
-                "------------------------\n" +
-                "19 - Dodaj pracownika\n" +
-                "20 - Znajdź pracownika po danych\n" +
-                "21 - Znajdz pracownika po Id\n" +
-                "22 - Zaktualizuj pracownika\n" +
-                "23 - Usun pracownika\n" +
-                "24 - Pokaż wszystkich pracowników\n" +
-                "------------------------\n" +
-                "25 - Dodaj klienta\n" +
-                "26 - Znajdź klienta po danych\n" +
-                "27 - Znajdz klienta po Id\n" +
-                "28 - Zaktualizuj klienta\n" +
-                "29 - Usun klienta\n" +
-                "30 - Pokaż wszystkich klientów\n" +
-                "------------------------\n" +
-                "31 - Dodaj informacje o wypożyczeniu\n" +
-                "32 - Znajdź informacje o wypożyczeniu po danych\n" +
-                "33 - Znajdz informacje o wypożyczeniu po Id\n" +
-                "34 - Zaktualizuj informacje o wypożyczeniu\n" +
-                "35 - Usun informacje o wypożyczeniu\n" +
-                "36 - Pokaż wszystkie wypożyczenia\n" +
-                "------------------------\n" +
-                "36 - Zamknij aplikacje");
-    }
 
     private static void menu(MenuItem chooseMenu) {
+        int id;
         switch (chooseMenu) {
             case ADD_CAR:
-                carService.create(car(true));
+                carService.create(Add.addCar(true));
                 break;
             case FIND_CAR:
-                carService.find(car(false));
+                carService.find(Add.addCar(false));
                 break;
             case FIND_BY_ID_CAR:
-                carService.getId(id());
+                id = id();
+                Header.displayCar();
+                print.printIdCar(id);
+                stopLoop();
                 break;
             case UPDATE_CAR:
-                printCar();
-                carService.update(id(), car(true));
+                Header.displayCar();
+                print.printCar();
+                carService.update(id(), Add.addCar(true));
                 break;
             case DELETE_CAR:
-                printCar();
+                Header.displayCar();
+                print.printCar();
                 carService.remove(id());
                 break;
             case SHOW_CAR:
-                printCar();
+                Header.displayCar();
+                print.printCar();
                 stopLoop();
                 break;
             case ADD_BRAND:
-                brandService.create(brand());
+                brandService.create(Add.addBrand());
                 break;
             case FIND_BRAND:
-                brandService.find(brand());
+                brandService.find(Add.addBrand());
                 break;
             case FIND_BY_ID_BRAND:
-                brandService.getId(id());
+                id = id();
+                Header.displayBrand();
+                print.printIdBrand(id);
                 break;
             case UPDATE_BRAND:
-                printBrand();
-                brandService.update(id(), brand());
+                Header.displayBrand();
+                print.printBrand();
+                brandService.update(id(), Add.addBrand());
                 break;
             case DELETE_BRAND:
-                printBrand();
+                Header.displayBrand();
+                print.printBrand();
                 brandService.remove(id());
                 break;
             case SHOW_BRAND:
-                printBrand();
+                Header.displayBrand();
+                print.printBrand();
                 stopLoop();
                 break;
             case ADD_MODEL:
-                modelService.create(model(true));
+                modelService.create(Add.addModel(true));
                 break;
             case FIND_MODEL:
-                modelService.find(model(false));
+                modelService.find(Add.addModel(false));
                 break;
             case FIND_BY_ID_MODEL:
-                modelService.getId(id());
+                id = id();
+                Header.displayModels();
+                print.printIdModel(id);
+                stopLoop();
                 break;
             case UPDATE_MODEL:
-                printModel();
-                modelService.update(id(), model(true));
+                Header.displayModels();
+                print.printModels(new Model());
+                modelService.update(id(), Add.addModel(true));
                 break;
             case DELETE_MODEL:
-                printModel();
+                Header.displayModels();
+                print.printModels(new Model());
                 modelService.remove(id());
                 break;
             case SHOW_MODEL:
-                printModel();
+                Header.displayModels();
+                print.printModels(new Model());
                 stopLoop();
                 break;
             case ADD_EMPLOYEE:
-                employeeService.create(employee());
+                employeeService.create(Add.addEmployee());
                 break;
             case FIND_EMPLOYEE:
-                employeeService.find(employee());
+                employeeService.find(Add.addEmployee());
                 break;
             case FIND_BY_ID_EMPLOYEE:
-                employeeService.getId(id());
+                id = id();
+                Header.displayEmployee();
+                print.printIdEmployee(id);
                 break;
             case UPDATE_EMPLOYEE:
-                printEmployee();
-                employeeService.update(id(), employee());
+                Header.displayEmployee();
+                print.printEmployee();
+                employeeService.update(id(), Add.addEmployee());
                 break;
             case DELETE_EMPLOYEE:
-                printEmployee();
+                Header.displayEmployee();
+                print.printEmployee();
                 employeeService.remove(id());
                 break;
             case SHOW_EMPLOYEE:
-                printEmployee();
+                Header.displayEmployee();
+                print.printEmployee();
                 stopLoop();
                 break;
             case ADD_CUSTOMER:
-                customerService.create(customer());
+                customerService.create(Add.addCustomer());
                 break;
             case FIND_CUSTOMER:
-                customerService.find(customer());
+                customerService.find(Add.addCustomer());
                 break;
             case FIND_BY_ID_CUSTOMER:
-                customerService.getId(id());
+                id = id();
+                Header.displayCustomer();
+                print.printIdCustomer(id);
                 break;
             case UPDATE_CUSTOMER:
-                printCustomer();
-                customerService.update(id(), customer());
+                Header.displayCustomer();
+                print.printCustomer();
+                customerService.update(id(), Add.addCustomer());
                 break;
             case DELETE_CUSTOMER:
-                printCustomer();
+                Header.displayCustomer();
+                print.printCustomer();
                 customerService.remove(id());
                 break;
             case SHOW_CUSTOMER:
-                printCustomer();
+                Header.displayCustomer();
+                print.printCustomer();
                 stopLoop();
                 break;
             case ADD_RENT:
-                rentInformationService.create(rentInformation(false));
+                rentInformationService.create(Add.addRentInformation(false));
                 break;
             case FIND_RENT:
-                rentInformationService.find(rentInformation(false));
+                rentInformationService.find(Add.addRentInformation(false));
                 break;
             case FIND_BY_ID_RENT:
-                rentInformationService.getId(id());
+                id = id();
+                Header.displayRentInformation();
+                print.printIdRentInformation(id);
                 break;
             case UPDATE_RENT:
-                printRentInformation();
-                rentInformationService.update(id(), rentInformation(true));
+                Header.displayRentInformation();
+                print.printRentInformation();
+                rentInformationService.update(id(), Add.addRentInformation(true));
                 break;
             case DELETE_RENT:
-                printRentInformation();
+                Header.displayRentInformation();
+                print.printRentInformation();
                 rentInformationService.remove(id());
                 break;
             case SHOW_RENT:
-                printRentInformation();
+                Header.displayRentInformation();
+                print.printRentInformation();
                 stopLoop();
                 break;
             case EXIT:
@@ -240,334 +219,8 @@ public class Menu {
         }
     }
 
-    private static void printRentInformation() {
-        System.out.printf("%-15s", "Id:");
-        System.out.printf("%-15s", "Id Auta:");
-        System.out.printf("%-30s", "Start wynaj:");
-        System.out.printf("%-30s", "Koniec wynaj:");
-        System.out.printf("%-15s", "Id prac.:");
-        System.out.printf("%-15s", "Id klienta:");
-        System.out.printf("%-15s", "Typ:");
-        System.out.printf("%-30s", "Nazwa firmy");
-        System.out.printf("%-15s", "Numer tax");
-        System.out.printf("%-15s", "Imię:");
-        System.out.printf("%-15s", "Nazwisko:");
-        System.out.printf("%-15s", "Pesel:");
-        System.out.printf("%-15s", "Nr domu:");
-        System.out.printf("%-15s", "Nr miesz.:");
-        System.out.printf("%-25s", "Ulica:");
-        System.out.printf("%-15s", "Miasto:");
-        System.out.printf("%-15s", "Kod pocztowy:");
-        System.out.println("");
-        rentInformationService.find(new RentInformation(null, null, null, null, null, null, null, null, null, null, null, null,
-                        null, null, null, null, null, null, null, null))
-                .stream().forEach(text -> {
-                    System.out.printf("%-15s", text.getId());
-                    System.out.printf("%-15s", text.getCarId());
-                    System.out.printf("%-30s", text.getRentStart());
-                    System.out.printf("%-30s", text.getRentFinish());
-                    System.out.printf("%-15s", text.getEmployeeId());
-                    System.out.printf("%-15s", text.getCustomerId());
-                    System.out.printf("%-15s", text.getCustomerType());
-                    System.out.printf("%-30s", text.getCustomerCompanyName());
-                    System.out.printf("%-15s", text.getCustomerTaxNumber());
-                    System.out.printf("%-15s", text.getCustomerFirstName());
-                    System.out.printf("%-15s", text.getCustomerLastName());
-                    System.out.printf("%-15s", text.getCustomerPesel());
-                    System.out.printf("%-15s", text.getCustomerHouseNumber());
-                    System.out.printf("%-15s", text.getCustomerFlatNumber());
-                    System.out.printf("%-25s", text.getCustomerStreetName());
-                    System.out.printf("%-15s", text.getCustomerCity());
-                    System.out.printf("%-15s", text.getCustomerPostCode());
-                    System.out.println("");
-                });
-    }
 
-    private static void printCustomer() {
-        System.out.printf("%-15s", "Id:");
-        System.out.printf("%-15s", "Typ:");
-        System.out.printf("%-30s", "Nazwa firmy");
-        System.out.printf("%-15s", "Numer tax");
-        System.out.printf("%-15s", "Imię:");
-        System.out.printf("%-15s", "Nazwisko:");
-        System.out.printf("%-15s", "Pesel:");
-        System.out.printf("%-15s", "Nr domu:");
-        System.out.printf("%-15s", "Nr miesz.:");
-        System.out.printf("%-25s", "Ulica:");
-        System.out.printf("%-15s", "Miasto:");
-        System.out.printf("%-15s", "Kod pocztowy:");
-        System.out.println("");
-        customerService.find(new Customer(null, null, null, null, null, null, null, null, null, null, null))
-                .stream().forEach(text -> {
-                    System.out.printf("%-15s", text.getId());
-                    System.out.printf("%-15s", text.getType());
-                    System.out.printf("%-30s", text.getCompanyName());
-                    System.out.printf("%-15s", text.getTaxNumber());
-                    System.out.printf("%-15s", text.getFirstName());
-                    System.out.printf("%-15s", text.getLastName());
-                    System.out.printf("%-15s", text.getPesel());
-                    System.out.printf("%-15s", text.getHouseNumber());
-                    System.out.printf("%-15s", text.getFlatNumber());
-                    System.out.printf("%-25s", text.getStreetName());
-                    System.out.printf("%-15s", text.getCity());
-                    System.out.printf("%-15s", text.getPostCode());
-                    System.out.println("");
-                });
-    }
 
-    private static void printEmployee() {
-        System.out.printf("%-15s", "Id:");
-        System.out.printf("%-15s", "Imię:");
-        System.out.printf("%-15s", "Nazwisko:");
-        System.out.printf("%-15s", "Pesel:");
-        System.out.printf("%-15s", "Nr domu:");
-        System.out.printf("%-15s", "Nr miesz.:");
-        System.out.printf("%-25s", "Ulica:");
-        System.out.printf("%-15s", "Miasto:");
-        System.out.printf("%-15s", "Kod pocztowy:");
-        System.out.println("");
-        employeeService.find(new Employee(null, null, null, null, null, null, null, null)).stream()
-                .forEach(text -> {
-                    System.out.printf("%-15s", text.getId());
-                    System.out.printf("%-15s", text.getFirstName());
-                    System.out.printf("%-15s", text.getLastName());
-                    System.out.printf("%-15s", text.getPesel());
-                    System.out.printf("%-15s", text.getHouseNumber());
-                    System.out.printf("%-15s", text.getFlatNumber());
-                    System.out.printf("%-25s", text.getStreetName());
-                    System.out.printf("%-15s", text.getCity());
-                    System.out.printf("%-15s", text.getPostCode());
-                    System.out.println("");
-                });
-    }
-
-    private static void printCar() {
-        printCarsHeader("%-5s", "Id:", "Reg nr:", "Numer Vin:", "%-15s", "Data zakupu:", "Marka:", "Model:");
-        printCars();
-    }
-
-    private static void printCars() {
-        carService.find(new Car())
-                .stream().forEach(Menu::displayCar);
-    }
-
-    private static void printCarsHeader(String s, String s2, String s3, String s4, String s5, String s6, String s7, String s8) {
-        System.out.printf(s, s2);
-        System.out.printf("%-15s", s3);
-        System.out.printf("%-15s", s4);
-        System.out.printf(s5, s6);
-        System.out.printf("%-15s", s7);
-        System.out.printf("%-15s", s8);
-        System.out.println("");
-    }
-
-    private static void printBrand() {
-        System.out.printf("%-15s", "Id:");
-        System.out.printf("%-15s", "Marka:");
-        System.out.println("");
-        brandService.find(new Brand()).stream()
-                .forEach(text -> {
-                    System.out.printf("%-15s", text.getId());
-                    System.out.printf("%-15s", text.getName());
-                    System.out.println("");
-                });
-    }
-
-    private static void printModel() {
-        System.out.printf("%-15s", "Id:");
-        System.out.printf("%-15s", "Marka id:");
-        System.out.printf("%-15s", "Model:");
-        System.out.println("");
-        modelService.find(new Model(null, null)).stream()
-                .forEach(text -> {
-                    System.out.printf("%-15s", text.getId());
-                    System.out.printf("%-15s", text.getBrandId());
-                    System.out.printf("%-15s", text.getName());
-                    System.out.println("");
-                });
-    }
-
-    private static Car car(Boolean fullInformation) {
-        keyboard.nextLine();
-        System.out.println("Podaj numer rejestracyjny");
-        String regPlate = keyboard.nextLine();
-        System.out.println("Podaj VIN number");
-        String vinNumber = keyboard.nextLine();
-        System.out.println("Podaj date zakupu\n rok:");
-        int year = keyboard.nextInt();
-        System.out.println("miesiac:");
-        int month = keyboard.nextInt();
-        System.out.println("dzien:");
-        int day = keyboard.nextInt();
-        System.out.println("Podaj marke:");
-        int brandId;
-        if (fullInformation == true) {
-            printBrand();
-            brandId = keyboard.nextInt();
-        } else {
-            brandId = keyboard.nextInt();
-        }
-        System.out.println("Podaj model");
-        int modelId;
-        if (fullInformation == true) {
-            printModel();
-            modelId = keyboard.nextInt();
-        } else {
-            modelId = keyboard.nextInt();
-        }
-        return new Car(regPlate, vinNumber, LocalDate.of(year, month, day), new Brand(brandId), new Model(modelId));
-    }
-
-    private static Brand brand() {
-        keyboard.nextLine();
-        System.out.println("Podaj marke:");
-        String name = name = keyboard.nextLine();
-        return new Brand(name);
-    }
-
-    private static Model model(Boolean fullInformation) {
-        keyboard.nextLine();
-        Integer brandId;
-        System.out.println("Podaj Id marki:");
-        if (fullInformation == true) {
-            printBrand();
-            brandId = keyboard.nextInt();
-        } else {
-            brandId = keyboard.nextInt();
-        }
-        keyboard.nextLine();
-        System.out.println("Podaj nazwe:");
-        String name = keyboard.nextLine();
-        return new Model(brandId, name);
-    }
-
-    private static Customer customer() {
-        keyboard.nextLine();
-        System.out.println("Podaj typ:");
-        String type = keyboard.nextLine();
-        System.out.println("Podaj nazwe firmy:");
-        String companyName = keyboard.nextLine();
-        System.out.println("Podaj tax number:");
-        String taxNumber = keyboard.nextLine();
-        System.out.println("Podaj imie:");
-        String firstName = keyboard.nextLine();
-        System.out.println("Podaj nazwisko:");
-        String lastName = keyboard.nextLine();
-        System.out.println("Podaj pesel:");
-        String pesel = keyboard.nextLine();
-        System.out.println("Podaj numer domu:");
-        String houseNumber = keyboard.nextLine();
-        System.out.println("Podaj numer mieszkania:");
-        String flatNumber = keyboard.nextLine();
-        System.out.println("Podaj nazwe ulicy:");
-        String streetName = keyboard.nextLine();
-        System.out.println("Podaj miasto:");
-        String city = keyboard.nextLine();
-        System.out.println("Podaj kod pocztowy:");
-        String postCode = keyboard.nextLine();
-        return new Customer(type, companyName, taxNumber, firstName, lastName, pesel, houseNumber, flatNumber, streetName,
-                city, postCode);
-    }
-
-    private static Employee employee() {
-        keyboard.nextLine();
-        System.out.println("Podaj imie:");
-        String firstName = keyboard.nextLine();
-        System.out.println("Podaj nazwisko:");
-        String lastName = keyboard.nextLine();
-        System.out.println("Podaj pesel:");
-        String pesel = keyboard.nextLine();
-        System.out.println("Podaj numer domu:");
-        String houseNumber = keyboard.nextLine();
-        System.out.println("Podaj numer mieszkania:");
-        String flatNumber = keyboard.nextLine();
-        System.out.println("Podaj nazwe ulicy:");
-        String streetName = keyboard.nextLine();
-        System.out.println("Podaj miasto:");
-        String city = keyboard.nextLine();
-        System.out.println("Podaj kod pocztowy:");
-        String postCode = keyboard.nextLine();
-        return new Employee(firstName, lastName, pesel, houseNumber, flatNumber, streetName, city, postCode);
-    }
-
-    private static RentInformation rentInformation(Boolean fullInformation) {
-        keyboard.nextLine();
-        Integer carId;
-        System.out.println("Podaj id samochodu:");
-        if (fullInformation == true) {
-            printCar();
-            carId = keyboard.nextInt();
-        } else {
-            carId = keyboard.nextInt();
-        }
-        System.out.println("Podaj date rozpoczecia");
-        LocalDateTime rentStart = dateTime();
-        System.out.println("Podaj date zakonczenia:");
-        LocalDateTime rentFinish = dateTime();
-        Integer employeeId;
-        System.out.println("Podaj Id pracownika:");
-        if (fullInformation == true) {
-            printRentInformation();
-            employeeId = keyboard.nextInt();
-        } else {
-            employeeId = keyboard.nextInt();
-        }
-        Integer customerId;
-        System.out.println("Podaj Id klienta:");
-        if (fullInformation == true) {
-            printRentInformation();
-            customerId = keyboard.nextInt();
-        } else {
-            customerId = keyboard.nextInt();
-        }
-        keyboard.nextLine();
-        System.out.println("Podaj typ:");
-        String customerType = keyboard.nextLine();
-        System.out.println("Podaj nazwe firmy:");
-        String customerCompanyName = keyboard.nextLine();
-        System.out.println("Podaj numer tax:");
-        String customerTaxNumber = keyboard.nextLine();
-        System.out.println("Podaj imie klienta:");
-        String customerFirstName = keyboard.nextLine();
-        System.out.println("Podaj nazwisko klienta:");
-        String customerLastName = keyboard.nextLine();
-        System.out.println("Podaj pesel klienta:");
-        String customerPesel = keyboard.nextLine();
-        System.out.println("Podaj numer domu klienta:");
-        String customerHouseNumber = keyboard.nextLine();
-        System.out.println("Podaj numer mieszkania klienta:");
-        String customerFlatNumber = keyboard.nextLine();
-        System.out.println("Podaj nazwe ulicy klienta");
-        String customerStreetName = keyboard.nextLine();
-        System.out.println("Podaj miasto klienta:");
-        String customerCity = keyboard.nextLine();
-        System.out.println("Podja kod pocztowy klienta:");
-        String customerPostCode = keyboard.nextLine();
-        System.out.println("Podaj cene netto za dzien:");
-        BigDecimal rentNetPrice = keyboard.nextBigDecimal();
-        System.out.println("Podaj ile procent podatku:");
-        BigDecimal rentPercent = keyboard.nextBigDecimal();
-        BigDecimal rentGrossPrice = rentNetPrice.multiply(rentPercent.add(BigDecimal.valueOf(100)).divide(BigDecimal.valueOf(100)));
-
-        return new RentInformation(carId, rentStart, rentFinish, employeeId, customerId, customerType, customerCompanyName, customerTaxNumber,
-                customerFirstName, customerLastName, customerPesel, customerHouseNumber, customerFlatNumber, customerStreetName,
-                customerCity, customerPostCode, rentNetPrice, rentPercent, rentGrossPrice);
-    }
-
-    private static LocalDateTime dateTime() {
-        keyboard.nextLine();
-        System.out.println("Podaj rok:");
-        Integer year = keyboard.nextInt();
-        System.out.println("Podaj miesiac:");
-        Integer month = keyboard.nextInt();
-        System.out.println("Podaj dzien:");
-        Integer day = keyboard.nextInt();
-        System.out.println("Podaj godzine:");
-        Integer hour = keyboard.nextInt();
-        System.out.println("Podaj minuty:");
-        Integer minute = keyboard.nextInt();
-        return LocalDateTime.of(year, month, day, hour, minute);
-    }
 
     private static Integer id() {
         keyboard.nextLine();

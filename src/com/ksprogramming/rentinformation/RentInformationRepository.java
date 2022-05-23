@@ -4,6 +4,8 @@ import com.ksprogramming.CommonRepository;
 import com.ksprogramming.DatabaseException;
 import com.ksprogramming.DateTimeUtil;
 import com.ksprogramming.car.Car;
+import com.ksprogramming.customer.Customer;
+import com.ksprogramming.employee.Employee;
 
 import java.sql.*;
 import java.time.ZoneId;
@@ -26,16 +28,23 @@ public class RentInformationRepository {
         ResultSet resultSet = null;
 
         try {
-            preparedStatement = connection.prepareStatement("select * from rent_information where id = ?");
+            preparedStatement = connection.prepareStatement("select * from rent_information as r " +
+                    "join car as c on r.car_id  = c.id " +
+                    "join employee as e on r.employee_id = e.id " +
+                    "join customer as cr on r.customer_id  = cr.id where r.id = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                return new RentInformation(resultSet.getInt("id"), resultSet.getInt("car_id"), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_start")), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_finish")),
-                        resultSet.getInt("employee_id"), resultSet.getInt("customer_id"), resultSet.getString("customer_type"),
-                        resultSet.getString("customer_company_name"), resultSet.getString("customer_tax_number"), resultSet.getString("customer_first_name"),
-                        resultSet.getString("customer_last_name"), resultSet.getString("customer_pesel"), resultSet.getString("customer_house_number"),
-                        resultSet.getString("customer_flat_number"), resultSet.getString("customer_street_name"),
-                        resultSet.getString("customer_city"), resultSet.getString("customer_post_code"), resultSet.getBigDecimal("rent_net_price"),
+                return new RentInformation(resultSet.getInt("r.id"),
+                        new Car(resultSet.getString("registration_plate")), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_start")),
+                        DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_finish")),
+                        new Employee(resultSet.getString("first_name")), new Customer(resultSet.getString("first_name")),
+                        resultSet.getString("customer_type"), resultSet.getString("customer_company_name"),
+                        resultSet.getString("customer_tax_number"), resultSet.getString("customer_first_name"),
+                        resultSet.getString("customer_last_name"), resultSet.getString("customer_pesel"),
+                        resultSet.getString("customer_house_number"), resultSet.getString("customer_flat_number"),
+                        resultSet.getString("customer_street_name"), resultSet.getString("customer_city"),
+                        resultSet.getString("customer_post_code"), resultSet.getBigDecimal("rent_net_price"),
                         resultSet.getBigDecimal("rent_percent"), resultSet.getBigDecimal("rent_gross_price"));
             }
         }catch (SQLException sqlException){
@@ -73,11 +82,11 @@ public class RentInformationRepository {
                             "customer_last_name, customer_pesel, customer_house_number, customer_flat_number, customer_street_name, " +
                             "customer_city, customer_post_code, rent_net_price, rent_percent, rent_gross_price) " + "" +
                             "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            preparedStatement.setInt(1, rentInformation.getCarId());
+            preparedStatement.setInt(1, rentInformation.getCar().getId());
             preparedStatement.setTimestamp(2, DateTimeUtil.convertToSqlDateTime(rentInformation.getRentStart()));
             preparedStatement.setTimestamp(3, DateTimeUtil.convertToSqlDateTime(rentInformation.getRentFinish()));
-            preparedStatement.setInt(4, rentInformation.getEmployeeId());
-            preparedStatement.setInt(5, rentInformation.getCustomerId());
+            preparedStatement.setInt(4, rentInformation.getEmployee().getId());
+            preparedStatement.setInt(5, rentInformation.getCustomer().getId());
             preparedStatement.setString(6, rentInformation.getCustomerType());
             preparedStatement.setString(7, rentInformation.getCustomerCompanyName());
             preparedStatement.setString(8, rentInformation.getCustomerTaxNumber());
@@ -108,11 +117,11 @@ public class RentInformationRepository {
                     "employee_id = ?, customer_id = ?, customer_type = ?, customer_company_name = ?, customer_tax_number = ?, customer_first_name = ?" +
                     "customer_last_name = ?, customer_pesel = ?, customer_house_number = ?, customer_flat_number = ?, customer_street_name = ?" +
                     "customer_city = ?, customer_post_code = ?, rent_net_price = ?, rent_percent = ?, rent_gross_price = ? where id = ?");
-            preparedStatement.setInt(1, rentInformation.getCarId());
+            preparedStatement.setInt(1, rentInformation.getCar().getId());
             preparedStatement.setTimestamp(2, DateTimeUtil.convertToSqlDateTime(rentInformation.getRentStart()));
             preparedStatement.setTimestamp(3, DateTimeUtil.convertToSqlDateTime(rentInformation.getRentFinish()));
-            preparedStatement.setInt(4, rentInformation.getEmployeeId());
-            preparedStatement.setInt(5, rentInformation.getCustomerId());
+            preparedStatement.setInt(4, rentInformation.getEmployee().getId());
+            preparedStatement.setInt(5, rentInformation.getCustomer().getId());
             preparedStatement.setString(6, rentInformation.getCustomerType());
             preparedStatement.setString(7, rentInformation.getCustomerCompanyName());
             preparedStatement.setString(8, rentInformation.getCustomerTaxNumber());
@@ -152,8 +161,8 @@ public class RentInformationRepository {
     private List<RentInformation> prepareResultsSet(ResultSet resultSet) throws SQLException {
         List<RentInformation> addBrand = new ArrayList<>();
         while (resultSet.next()){
-            addBrand.add(new RentInformation(resultSet.getInt("id"), resultSet.getInt("car_id"), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_start")), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_finish")),
-                    resultSet.getInt("employee_id"), resultSet.getInt("customer_id"), resultSet.getString("customer_type"),
+            addBrand.add(new RentInformation(resultSet.getInt("r.id"), new Car(resultSet.getString("registration_plate")), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_start")), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_finish")),
+                    new Employee(resultSet.getString("first_name")), new Customer(resultSet.getString("first_name")), resultSet.getString("customer_type"),
                     resultSet.getString("customer_company_name"), resultSet.getString("customer_tax_number"), resultSet.getString("customer_first_name"),
                     resultSet.getString("customer_last_name"), resultSet.getString("customer_pesel"), resultSet.getString("customer_house_number"),
                     resultSet.getString("customer_flat_number"), resultSet.getString("customer_street_name"),
@@ -165,8 +174,8 @@ public class RentInformationRepository {
 
     private void setParameters(PreparedStatement preparedStatement, RentInformation rentInformation) throws SQLException {
         int index = 1;
-        if (rentInformation.getCarId() != null){
-            preparedStatement.setInt(index++, rentInformation.getCarId());
+        if (rentInformation.getCar() != null && rentInformation.getCar().getId() != null){
+            preparedStatement.setInt(index++, rentInformation.getCar().getId());
         }
         if (rentInformation.getRentStart() != null){
             preparedStatement.setTimestamp(index++, DateTimeUtil.convertToSqlDateTime(rentInformation.getRentStart()));
@@ -174,11 +183,11 @@ public class RentInformationRepository {
         if (rentInformation.getRentFinish() != null){
             preparedStatement.setTimestamp(index++, DateTimeUtil.convertToSqlDateTime(rentInformation.getRentFinish()));
         }
-        if (rentInformation.getEmployeeId() != null){
-            preparedStatement.setInt(index++, rentInformation.getEmployeeId());
+        if (rentInformation.getEmployee() != null && rentInformation.getEmployee().getId() != null){
+            preparedStatement.setInt(index++, rentInformation.getEmployee().getId());
         }
-        if (rentInformation.getCustomerId() != null){
-            preparedStatement.setInt(index++, rentInformation.getCustomerId());
+        if (rentInformation.getCustomer() != null && rentInformation.getCustomer().getId() != null){
+            preparedStatement.setInt(index++, rentInformation.getCustomer().getId());
         }
         if (rentInformation.getCustomerType() != null){
             preparedStatement.setString(index++, rentInformation.getCustomerType());
@@ -222,8 +231,11 @@ public class RentInformationRepository {
     }
 
     private String prepareQuery(RentInformation rentInformation) {
-        String query = "select * from rent_information where 1=1 ";
-        if (rentInformation.getCarId() != null){
+        String query = "select * from rent_information as r " +
+                "join car as c on r.car_id  = c.id " +
+                "join employee as e on r.employee_id = e.id " +
+                "join customer as cr on r.customer_id  = cr.id where 1=1 ";
+        if (rentInformation.getCar() != null && rentInformation.getCar().getId() != null){
             query = query + "and car_id = ?";
         }
         if (rentInformation.getRentStart() != null){
@@ -232,10 +244,10 @@ public class RentInformationRepository {
         if (rentInformation.getRentFinish() != null){
             query = query + "and rent_finish = ?";
         }
-        if (rentInformation.getEmployeeId() != null){
+        if (rentInformation.getEmployee() != null && rentInformation.getEmployee().getId() != null){
             query = query + "and employee_id = ?";
         }
-        if (rentInformation.getCustomerId() != null){
+        if (rentInformation.getCustomer() != null && rentInformation.getCustomer().getId() != null){
             query = query + "and customer_id = ?";
         }
         if (rentInformation.getCustomerType() != null){

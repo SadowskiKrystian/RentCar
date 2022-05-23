@@ -5,7 +5,7 @@ import com.ksprogramming.model.Model;
 
 import java.time.LocalDate;
 
-public class Car {
+public class Car{
     private Integer id;
     private String registrationPlate;
     private String vinNumber;

@@ -28,15 +28,14 @@ public class CarRepository {
         ResultSet resultSet = null;
 
         try {
-            preparedStatement = connection.prepareStatement("select * \n" +
-                    "from car as c\n" +
-                    "join brand as b on c.brand_id = b.id\n" +
-                    "join model as m on c.model_id = m.id " +
-                    "where id = ?");
+            preparedStatement = connection.prepareStatement("select * from car as c " +
+                    "join brand as b on c.brand_id = b.id " +
+                    "join model as m on b.id  = m.brand_id " +
+                    "where c.id = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                return new Car(resultSet.getInt("id"), resultSet.getString("registration_plate"),
+                return new Car(resultSet.getInt("c.id"), resultSet.getString("registration_plate"),
                         resultSet.getString("vin_number"), resultSet.getDate("purchase_date").toLocalDate(),
                         new Brand(resultSet.getString("b.name")), new Model(resultSet.getString("m.name")));
             }
@@ -119,13 +118,13 @@ public class CarRepository {
     }
 
     private List<Car> prepareResultsSet(ResultSet resultSet) throws SQLException {
-        List<Car> cars = new ArrayList<>();
-        while (resultSet.next()){
-            cars.add(new Car(resultSet.getInt("id"), resultSet.getString("registration_plate"),
-                    resultSet.getString("vin_number"), resultSet.getDate("purchase_date").toLocalDate(),
-                    new Brand(resultSet.getString("b.name")), new Model(resultSet.getString("m.name"))));
-        }
-        return cars;
+        List<Car> addBrand = new ArrayList<>();
+            while (resultSet.next()) {
+                addBrand.add(new Car(resultSet.getInt("c.id"), resultSet.getString("registration_plate"),
+                        resultSet.getString("vin_number"), resultSet.getDate("purchase_date").toLocalDate(),
+                        new Brand(resultSet.getString("b.name")), new Model(resultSet.getString("m.name"))));
+            }
+            return addBrand;
     }
 
     private void setParameters(PreparedStatement preparedStatement, Car car) throws SQLException {
@@ -148,11 +147,10 @@ public class CarRepository {
     }
 
     private String prepareQuery(Car car) {
-        String query = "select c.id, c.registration_plate, vin_number, purchase_date, b.name, m.name\n" +
-                "from car as c\n" +
-                "join brand as b on c.brand_id = b.id\n" +
-                "join model as m on c.model_id = m.id " +
-                "where 1 = 1 ";
+        String query = "select * from car as c " +
+                "join brand as b on c.brand_id = b.id " +
+                "join model as m on b.id  = m.brand_id " +
+                "where 1=1 ";
         if (car.getRegistrationPlate() != null){
             query = query + "and registration_plate = ?";
         }

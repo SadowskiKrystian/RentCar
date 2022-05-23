@@ -1,15 +1,19 @@
 package com.ksprogramming.rentinformation;
 
+import com.ksprogramming.car.Car;
+import com.ksprogramming.customer.Customer;
+import com.ksprogramming.employee.Employee;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class RentInformation {
     private Integer id;
-    private Integer carId;
+    private Car car;
     private LocalDateTime rentStart;
     private LocalDateTime rentFinish;
-    private Integer employeeId;
-    private Integer customerId;
+    private Employee employee;
+    private Customer customer;
     private String customerType;
     private String customerCompanyName;
     private String customerTaxNumber;
@@ -25,17 +29,18 @@ public class RentInformation {
     private BigDecimal rentPercent;
     private BigDecimal rentGrossPrice;
 
-    public RentInformation(Integer id, Integer carId, LocalDateTime rentStart, LocalDateTime rentFinish, Integer employeeId,
-                           Integer customerId, String customerType, String customerCompanyName, String customerTaxNumber,
-                           String customerFirstName, String customerLastName, String customerPesel, String customerHouseNumber,
-                           String customerFlatNumber, String customerStreetName, String customerCity, String customerPostCode,
+    public RentInformation(Integer id, Car car, LocalDateTime rentStart, LocalDateTime rentFinish,
+                           Employee employee, Customer customer, String customerType, String customerCompanyName,
+                           String customerTaxNumber, String customerFirstName, String customerLastName,
+                           String customerPesel, String customerHouseNumber, String customerFlatNumber,
+                           String customerStreetName, String customerCity, String customerPostCode,
                            BigDecimal rentNetPrice, BigDecimal rentPercent, BigDecimal rentGrossPrice) {
         this.id = id;
-        this.carId = carId;
+        this.car = car;
         this.rentStart = rentStart;
         this.rentFinish = rentFinish;
-        this.employeeId = employeeId;
-        this.customerId = customerId;
+        this.employee = employee;
+        this.customer = customer;
         this.customerType = customerType;
         this.customerCompanyName = customerCompanyName;
         this.customerTaxNumber = customerTaxNumber;
@@ -52,16 +57,17 @@ public class RentInformation {
         this.rentGrossPrice = rentGrossPrice;
     }
 
-    public RentInformation(Integer carId, LocalDateTime rentStart, LocalDateTime rentFinish, Integer employeeId, Integer customerId,
-                           String customerType, String customerCompanyName, String customerTaxNumber, String customerFirstName,
-                           String customerLastName, String customerPesel, String customerHouseNumber, String customerFlatNumber,
-                           String customerStreetName, String customerCity, String customerPostCode, BigDecimal rentNetPrice,
+    public RentInformation(Car car, LocalDateTime rentStart, LocalDateTime rentFinish, Employee employee,
+                           Customer customer, String customerType, String customerCompanyName, String customerTaxNumber,
+                           String customerFirstName, String customerLastName, String customerPesel,
+                           String customerHouseNumber, String customerFlatNumber, String customerStreetName,
+                           String customerCity, String customerPostCode, BigDecimal rentNetPrice,
                            BigDecimal rentPercent, BigDecimal rentGrossPrice) {
-        this.carId = carId;
+        this.car = car;
         this.rentStart = rentStart;
         this.rentFinish = rentFinish;
-        this.employeeId = employeeId;
-        this.customerId = customerId;
+        this.employee = employee;
+        this.customer = customer;
         this.customerType = customerType;
         this.customerCompanyName = customerCompanyName;
         this.customerTaxNumber = customerTaxNumber;
@@ -82,8 +88,8 @@ public class RentInformation {
         return id;
     }
 
-    public Integer getCarId() {
-        return carId;
+    public Car getCar() {
+        return car;
     }
 
     public LocalDateTime getRentStart() {
@@ -94,12 +100,12 @@ public class RentInformation {
         return rentFinish;
     }
 
-    public Integer getEmployeeId() {
-        return employeeId;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
     public String getCustomerType() {
@@ -160,11 +166,12 @@ public class RentInformation {
 
     @Override
     public String toString() {
-        return id + carId +
-                 "" + rentStart +
+        return  id + "" +
+                car +
+                rentStart +
                 rentFinish +
-                employeeId +
-                customerId +
+                employee +
+                customer +
                 customerType +
                 customerCompanyName +
                 customerTaxNumber +
