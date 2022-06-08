@@ -1,7 +1,10 @@
 package com.ksprogramming;
 
+import com.ksprogramming.brand.Brand;
 import com.ksprogramming.brand.BrandService;
+import com.ksprogramming.car.Car;
 import com.ksprogramming.car.CarService;
+import com.ksprogramming.customer.Customer;
 import com.ksprogramming.customer.CustomerService;
 import com.ksprogramming.employee.EmployeeService;
 import com.ksprogramming.model.Model;
@@ -19,7 +22,7 @@ public class Menu {
     private static ModelService modelService = null;
     private static CarService carService = null;
     private static RentInformationService rentInformationService = null;
-    private  static Printer print = null;
+    private static Printer print = null;
     private static Add add = null;
 
     public Menu(CustomerService customerService, EmployeeService employeeService,
@@ -36,20 +39,28 @@ public class Menu {
 
     public void showChoosenMenu() {
         while (exitApplication) {
-            Header.showMenu();
-            menu(chooseMenu());
+            try {
+                Header.showMenu();
+                menu(chooseMenu());
+            } catch (IllegalArgumentException illegalArgumentException) {
+                System.out.println(illegalArgumentException.getMessage());
+            }
         }
     }
-
 
     private static void menu(MenuItem chooseMenu) {
         int id;
         switch (chooseMenu) {
             case ADD_CAR:
-                carService.create(Add.addCar(true));
+                carService.create(Add.addCar());
                 break;
             case FIND_CAR:
-                carService.find(Add.addCar(false));
+                carService.find(Add.addCar()).stream()
+                        .forEach(car -> {
+                            Header.displayCar();
+                            print.printCarDetails(car);
+                        });
+                stopLoop();
                 break;
             case FIND_BY_ID_CAR:
                 id = id();
@@ -60,7 +71,7 @@ public class Menu {
             case UPDATE_CAR:
                 Header.displayCar();
                 print.printCars();
-                carService.update(id(), Add.addCar(true));
+                carService.update(id(), Add.addCar());
                 break;
             case DELETE_CAR:
                 Header.displayCar();
@@ -76,44 +87,52 @@ public class Menu {
                 brandService.create(Add.addBrand());
                 break;
             case FIND_BRAND:
-                brandService.find(Add.addBrand());
+                brandService.find(Add.addBrand()).stream().forEach(brand -> {
+                    Header.displayBrand();
+                    print.printBrandDetails(brand);
+                });
+                stopLoop();
                 break;
             case FIND_BY_ID_BRAND:
                 id = id();
                 Header.displayBrand();
-                print.printIdBrand(id);
+                print.printBrand(id);
                 break;
             case UPDATE_BRAND:
                 Header.displayBrand();
-                print.printBrand();
+                print.printBrands();
                 brandService.update(id(), Add.addBrand());
                 break;
             case DELETE_BRAND:
                 Header.displayBrand();
-                print.printBrand();
+                print.printBrands();
                 brandService.remove(id());
                 break;
             case SHOW_BRAND:
                 Header.displayBrand();
-                print.printBrand();
+                print.printBrands();
                 stopLoop();
                 break;
             case ADD_MODEL:
-                modelService.create(Add.addModel(true));
+                modelService.create(Add.addModel());
                 break;
             case FIND_MODEL:
-                modelService.find(Add.addModel(false));
+                modelService.find(Add.addModel()).stream().forEach(model -> {
+                    Header.displayModels();
+                    print.printModelDetails(model);
+                });
+                stopLoop();
                 break;
             case FIND_BY_ID_MODEL:
                 id = id();
                 Header.displayModels();
-                print.printIdModel(id);
+                print.printModel(id);
                 stopLoop();
                 break;
             case UPDATE_MODEL:
                 Header.displayModels();
                 print.printModels(new Model());
-                modelService.update(id(), Add.addModel(true));
+                modelService.update(id(), Add.addModel());
                 break;
             case DELETE_MODEL:
                 Header.displayModels();
@@ -129,12 +148,18 @@ public class Menu {
                 employeeService.create(Add.addEmployee());
                 break;
             case FIND_EMPLOYEE:
-                employeeService.find(Add.addEmployee());
+                employeeService.find(Add.addEmployee()).stream()
+                        .forEach(employee -> {
+                            Header.displayEmployee();
+                            print.printEmployeeDetails(employee);
+                        });
+                stopLoop();
                 break;
             case FIND_BY_ID_EMPLOYEE:
                 id = id();
                 Header.displayEmployee();
                 print.printIdEmployee(id);
+                stopLoop();
                 break;
             case UPDATE_EMPLOYEE:
                 Header.displayEmployee();
@@ -155,63 +180,73 @@ public class Menu {
                 customerService.create(Add.addCustomer());
                 break;
             case FIND_CUSTOMER:
-                customerService.find(Add.addCustomer());
+                customerService.find(Add.addCustomer()).stream()
+                        .forEach(customer -> {
+                            Header.displayCustomer();
+                            print.printCustomerDetail(customer);
+                        });
+                stopLoop();
                 break;
             case FIND_BY_ID_CUSTOMER:
                 id = id();
                 Header.displayCustomer();
-                print.printIdCustomer(id);
+                print.printCustomer(id);
+                stopLoop();
                 break;
             case UPDATE_CUSTOMER:
                 Header.displayCustomer();
-                print.printCustomer();
+                print.printCustomers();
                 customerService.update(id(), Add.addCustomer());
                 break;
             case DELETE_CUSTOMER:
                 Header.displayCustomer();
-                print.printCustomer();
+                print.printCustomers();
                 customerService.remove(id());
                 break;
             case SHOW_CUSTOMER:
                 Header.displayCustomer();
-                print.printCustomer();
+                print.printCustomers();
                 stopLoop();
                 break;
             case ADD_RENT:
-                rentInformationService.create(Add.addRentInformation(false));
+                rentInformationService.create(Add.addRentInformation());
                 break;
             case FIND_RENT:
-                rentInformationService.find(Add.addRentInformation(false));
+                rentInformationService.find(Add.addRentInformation()).stream()
+                        .forEach(rentInformation -> {
+                            Header.displayRentInformation();
+                            print.printRentInformationDetails(rentInformation);
+                        });
+                stopLoop();
                 break;
             case FIND_BY_ID_RENT:
                 id = id();
                 Header.displayRentInformation();
-                print.printIdRentInformation(id);
+                print.printRentInformation(id);
+                stopLoop();
                 break;
             case UPDATE_RENT:
                 Header.displayRentInformation();
-                print.printRentInformation();
-                rentInformationService.update(id(), Add.addRentInformation(true));
+                print.printRentsInformation();
+                rentInformationService.update(id(), Add.addRentInformation());
                 break;
             case DELETE_RENT:
                 Header.displayRentInformation();
-                print.printRentInformation();
+                print.printRentsInformation();
                 rentInformationService.remove(id());
                 break;
             case SHOW_RENT:
                 Header.displayRentInformation();
-                print.printRentInformation();
+                print.printRentsInformation();
                 stopLoop();
                 break;
             case EXIT:
                 exitApplication = false;
                 break;
             default:
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Wpisales numer z poza listy menu lub wpisales znak");
         }
     }
-
-
 
 
     private static Integer id() {
@@ -304,7 +339,7 @@ public class Menu {
             case 37:
                 return MenuItem.EXIT;
             default:
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Wpisales numer z poza listy menu lub wpisales znak");
         }
     }
 

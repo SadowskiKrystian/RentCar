@@ -11,6 +11,9 @@ public class Employee {
     private String city;
     private String postCode;
 
+    public Employee() {
+    }
+
     public Employee(Integer id, String firstName, String lastName, String pesel, String houseNumber, String flatNumber, String streetName, String city, String postCode) {
         this.id = id;
         this.firstName = firstName;

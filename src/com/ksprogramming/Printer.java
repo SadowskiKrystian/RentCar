@@ -31,117 +31,107 @@ public class Printer {
         this.rentInformationService = rentInformationService;
     }
 
-    public void printRentInformation() {
+    public void printRentsInformation() {
         rentInformationService.find(new RentInformation())
-                .stream().forEach(text -> {
-                    System.out.printf("%-15s", text.getId());
-                    System.out.printf("%-15s", text.getCar().getBrand().getName());
-                    System.out.printf("%-30s", text.getRentStart());
-                    System.out.printf("%-30s", text.getRentFinish());
-                    System.out.printf("%-15s", text.getEmployee().getFirstName());
-                    System.out.printf("%-15s", text.getCustomer().getFirstName());
-                    System.out.printf("%-15s", text.getCustomerType());
-                    System.out.printf("%-30s", text.getCustomerCompanyName());
-                    System.out.printf("%-15s", text.getCustomerTaxNumber());
-                    System.out.printf("%-15s", text.getCustomerFirstName());
-                    System.out.printf("%-15s", text.getCustomerLastName());
-                    System.out.printf("%-15s", text.getCustomerPesel());
-                    System.out.printf("%-15s", text.getCustomerHouseNumber());
-                    System.out.printf("%-15s", text.getCustomerFlatNumber());
-                    System.out.printf("%-25s", text.getCustomerStreetName());
-                    System.out.printf("%-15s", text.getCustomerCity());
-                    System.out.printf("%-15s", text.getCustomerPostCode());
-                    System.out.println("");
+                .stream().forEach(rentInformation -> {
+                    printRentInformationDetails(rentInformation);
                 });
     }
 
-    public void printIdRentInformation(Integer id) {
-                    System.out.printf("%-15s", rentInformationService.getId(id));
-                    System.out.printf("%-15s", rentInformationService.getId(id).getCar().getBrand().getName());
-                    System.out.printf("%-30s", rentInformationService.getId(id).getRentStart());
-                    System.out.printf("%-30s", rentInformationService.getId(id).getRentFinish());
-                    System.out.printf("%-15s", rentInformationService.getId(id).getEmployee().getFirstName());
-                    System.out.printf("%-15s", rentInformationService.getId(id).getCustomer().getFirstName());
-                    System.out.printf("%-15s", rentInformationService.getId(id).getCustomerType());
-                    System.out.printf("%-30s", rentInformationService.getId(id).getCustomerCompanyName());
-                    System.out.printf("%-15s", rentInformationService.getId(id).getCustomerTaxNumber());
-                    System.out.printf("%-15s", rentInformationService.getId(id).getCustomerFirstName());
-                    System.out.printf("%-15s", rentInformationService.getId(id).getCustomerLastName());
-                    System.out.printf("%-15s", rentInformationService.getId(id).getCustomerPesel());
-                    System.out.printf("%-15s", rentInformationService.getId(id).getCustomerHouseNumber());
-                    System.out.printf("%-15s", rentInformationService.getId(id).getCustomerFlatNumber());
-                    System.out.printf("%-25s", rentInformationService.getId(id).getCustomerStreetName());
-                    System.out.printf("%-15s", rentInformationService.getId(id).getCustomerCity());
-                    System.out.printf("%-15s", rentInformationService.getId(id).getCustomerPostCode());
-                    System.out.println("");
+
+    public void printRentInformation(Integer id) {
+        RentInformation rentInformation = rentInformationService.getId(id);
+        if (rentInformation != null) {
+            printRentInformationDetails(rentInformation);
+        }else{
+            printMissingCarMessage("wypożyczeniu");
+        }
     }
 
-    public void printCustomer() {
-        customerService.find(new Customer(null, null, null, null, null, null, null, null, null, null, null))
-                .stream().forEach(text -> {
-                    System.out.printf("%-15s", text.getId());
-                    System.out.printf("%-15s", text.getType());
-                    System.out.printf("%-30s", text.getCompanyName());
-                    System.out.printf("%-15s", text.getTaxNumber());
-                    System.out.printf("%-15s", text.getFirstName());
-                    System.out.printf("%-15s", text.getLastName());
-                    System.out.printf("%-15s", text.getPesel());
-                    System.out.printf("%-15s", text.getHouseNumber());
-                    System.out.printf("%-15s", text.getFlatNumber());
-                    System.out.printf("%-25s", text.getStreetName());
-                    System.out.printf("%-15s", text.getCity());
-                    System.out.printf("%-15s", text.getPostCode());
-                    System.out.println("");
+    public void printRentInformationDetails(RentInformation rentInformation) {
+        System.out.printf("%-15s", rentInformation.getId());
+        System.out.printf("%-30s", rentInformation.getCar().getRegistrationPlate());
+        System.out.printf("%-30s", rentInformation.getRentStart());
+        System.out.printf("%-30s", rentInformation.getRentFinish());
+        System.out.printf("%-15s", rentInformation.getEmployee().getFirstName());
+        System.out.printf("%-15s", rentInformation.getCustomer().getFirstName());
+        System.out.printf("%-15s", rentInformation.getCustomerType());
+        System.out.printf("%-30s", rentInformation.getCustomerCompanyName());
+        System.out.printf("%-15s", rentInformation.getCustomerTaxNumber());
+        System.out.printf("%-15s", rentInformation.getCustomerFirstName());
+        System.out.printf("%-15s", rentInformation.getCustomerLastName());
+        System.out.printf("%-15s", rentInformation.getCustomerPesel());
+        System.out.printf("%-15s", rentInformation.getCustomerHouseNumber());
+        System.out.printf("%-15s", rentInformation.getCustomerFlatNumber());
+        System.out.printf("%-25s", rentInformation.getCustomerStreetName());
+        System.out.printf("%-15s", rentInformation.getCustomerCity());
+        System.out.printf("%-15s", rentInformation.getCustomerPostCode());
+        System.out.printf("%-15s", rentInformation.getRentNetPrice());
+        System.out.printf("%-15s", rentInformation.getRentPercent());
+        System.out.printf("%-15s", rentInformation.getRentGrossPrice());
+        System.out.println("");
+    }
+
+    public void printCustomers() {
+        customerService.find(new Customer())
+                .stream().forEach(customer -> {
+                    printCustomerDetail(customer);
                 });
     }
 
-    public void printIdCustomer(Integer id) {
-                    System.out.printf("%-15s", customerService.getId(id).getId());
-                    System.out.printf("%-15s", customerService.getId(id).getType());
-                    System.out.printf("%-30s", customerService.getId(id).getCompanyName());
-                    System.out.printf("%-15s", customerService.getId(id).getTaxNumber());
-                    System.out.printf("%-15s", customerService.getId(id).getFirstName());
-                    System.out.printf("%-15s", customerService.getId(id).getLastName());
-                    System.out.printf("%-15s", customerService.getId(id).getPesel());
-                    System.out.printf("%-15s", customerService.getId(id).getHouseNumber());
-                    System.out.printf("%-15s", customerService.getId(id).getFlatNumber());
-                    System.out.printf("%-25s", customerService.getId(id).getStreetName());
-                    System.out.printf("%-15s", customerService.getId(id).getCity());
-                    System.out.printf("%-15s", customerService.getId(id).getPostCode());
-                    System.out.println("");
+    public void printCustomer(Integer id) {
+        Customer customer = customerService.getId(id);
+        if (customer != null) {
+            printCustomerDetail(customer);
+        }
+    }
+
+    public void printCustomerDetail(Customer customer) {
+        System.out.printf("%-15s", customer.getId());
+        System.out.printf("%-15s", customer.getType());
+        System.out.printf("%-30s", customer.getCompanyName());
+        System.out.printf("%-15s", customer.getTaxNumber());
+        System.out.printf("%-15s", customer.getFirstName());
+        System.out.printf("%-15s", customer.getLastName());
+        System.out.printf("%-15s", customer.getPesel());
+        System.out.printf("%-15s", customer.getHouseNumber());
+        System.out.printf("%-15s", customer.getFlatNumber());
+        System.out.printf("%-25s", customer.getStreetName());
+        System.out.printf("%-15s", customer.getCity());
+        System.out.printf("%-15s", customer.getPostCode());
+        System.out.println("");
     }
 
     public void printEmployee() {
-        employeeService.find(new Employee(null, null, null, null, null, null, null, null)).stream()
-                .forEach(text -> {
-                    System.out.printf("%-15s", text.getId());
-                    System.out.printf("%-15s", text.getFirstName());
-                    System.out.printf("%-15s", text.getLastName());
-                    System.out.printf("%-15s", text.getPesel());
-                    System.out.printf("%-15s", text.getHouseNumber());
-                    System.out.printf("%-15s", text.getFlatNumber());
-                    System.out.printf("%-25s", text.getStreetName());
-                    System.out.printf("%-15s", text.getCity());
-                    System.out.printf("%-15s", text.getPostCode());
-                    System.out.println("");
+        employeeService.find(new Employee()).stream()
+                .forEach(employee -> {
+                    printEmployeeDetails(employee);
                 });
     }
     public void printIdEmployee(Integer id) {
-                    System.out.printf("%-15s", employeeService.getId(id).getCity());
-                    System.out.printf("%-15s", employeeService.getId(id).getFirstName());
-                    System.out.printf("%-15s", employeeService.getId(id).getLastName());
-                    System.out.printf("%-15s", employeeService.getId(id).getPesel());
-                    System.out.printf("%-15s", employeeService.getId(id).getHouseNumber());
-                    System.out.printf("%-15s", employeeService.getId(id).getFlatNumber());
-                    System.out.printf("%-25s", employeeService.getId(id).getStreetName());
-                    System.out.printf("%-15s", employeeService.getId(id).getCity());
-                    System.out.printf("%-15s", employeeService.getId(id).getPostCode());
-                    System.out.println("");
+        Employee employee = employeeService.getId(id);
+        if(employee != null) {
+            printEmployeeDetails(employee);
+        }else{
+            printMissingCarMessage("pracowniku");
+        }
+    }
 
+    public void printEmployeeDetails(Employee employee) {
+        System.out.printf("%-15s", employee.getId());
+        System.out.printf("%-15s", employee.getFirstName());
+        System.out.printf("%-15s", employee.getLastName());
+        System.out.printf("%-15s", employee.getPesel());
+        System.out.printf("%-15s", employee.getHouseNumber());
+        System.out.printf("%-15s", employee.getFlatNumber());
+        System.out.printf("%-25s", employee.getStreetName());
+        System.out.printf("%-15s", employee.getCity());
+        System.out.printf("%-15s", employee.getPostCode());
+        System.out.println("");
     }
 
     public void printCars() {
-        carService.find(new Car(null, null, null, null, null))
+        carService.find(new Car())
                 .stream().forEach(text -> {
                     printCarDetails(text);
                 });
@@ -152,15 +142,13 @@ public class Printer {
         if (car != null) {
             printCarDetails(car);
         }else{
-            printMissingCarMessage();
+            printMissingCarMessage("samochodzie");
         }
     }
 
-    private void printMissingCarMessage() {
-        System.out.println("Brak danych o samochodzie o podanym id.");
-    }
 
-    private void printCarDetails(Car car) {
+
+    public void printCarDetails(Car car) {
         System.out.printf("%-5s", car.getId());
         System.out.printf("%-15s", car.getRegistrationPlate());
         System.out.printf("%-30s", car.getVinNumber());
@@ -170,18 +158,25 @@ public class Printer {
         System.out.println("");
     }
 
-    public void printBrand() {
+    public void printBrands() {
         brandService.find(new Brand()).stream()
                 .forEach(brand -> {
-                    System.out.printf("%-15s", brand.getId());
-                    System.out.printf("%-15s", brand.getName());
-                    System.out.println("");
+                    printBrandDetails(brand);
                 });
     }
 
-    public void printIdBrand(Integer id) {
-        System.out.printf("%-15s", brandService.getId(id).getId());
-        System.out.printf("%-15s", brandService.getId(id).getName());
+    public void printBrand(Integer id) {
+        Brand brand = brandService.getId(id);
+        if (brand != null) {
+            printBrandDetails(brand);
+        }else{
+            printMissingCarMessage("marce");
+        }
+    }
+
+    public void printBrandDetails(Brand brand) {
+        System.out.printf("%-15s", brand.getId());
+        System.out.printf("%-15s", brand.getName());
         System.out.println("");
     }
 
@@ -189,25 +184,32 @@ public class Printer {
         if (model.getBrand() != null) {
             modelService.find(new Model(new Brand(model.getBrand().getId()))).stream()
                     .forEach(modelBrand -> {
-                        System.out.printf("%-15s", modelBrand.getId());
-                        System.out.printf("%-15s", modelBrand.getBrand().getName());
-                        System.out.printf("%-15s", modelBrand.getName());
-                        System.out.println("");
+                        printModelDetails(modelBrand);
                     });
         } else {
             modelService.find(new Model()).stream()
                     .forEach(modelBrand -> {
-                        System.out.printf("%-15s", modelBrand.getId());
-                        System.out.printf("%-15s", modelBrand.getBrand().getName());
-                        System.out.printf("%-15s", modelBrand.getName());
-                        System.out.println("");
+                        printModelDetails(modelBrand);
                     });
         }
     }
-    public void printIdModel(Integer id){
-        System.out.printf("%-15s", modelService.getId(id).getId());
-        System.out.printf("%-15s", modelService.getId(id).getBrand().getName());
-        System.out.printf("%-15s", modelService.getId(id).getName());
+    public void printModel(Integer id){
+        Model model = modelService.getId(id);
+        if (model != null) {
+            printModelDetails(model);
+        }else{
+            printMissingCarMessage("modelu");
+        }
+    }
+
+    public void printModelDetails(Model model) {
+        System.out.printf("%-15s", model.getId());
+        System.out.printf("%-15s", model.getBrand().getName());
+        System.out.printf("%-15s", model.getName());
         System.out.println("");
+    }
+
+    private void printMissingCarMessage(String name) {
+        System.out.println("Brak danych o " + name + " o podanym id.");
     }
 }

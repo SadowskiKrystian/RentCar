@@ -30,7 +30,7 @@ public class CarRepository {
         try {
             preparedStatement = connection.prepareStatement("select * from car as c " +
                     "join brand as b on c.brand_id = b.id " +
-                    "join model as m on b.id  = m.brand_id " +
+                    "join model as m on c.model_id = m.id " +
                     "where c.id = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
@@ -149,22 +149,22 @@ public class CarRepository {
     private String prepareQuery(Car car) {
         String query = "select * from car as c " +
                 "join brand as b on c.brand_id = b.id " +
-                "join model as m on b.id  = m.brand_id " +
-                "where 1=1 ";
+                "join model as m on c.model_id = m.id " +
+                "where 1=1";
         if (car.getRegistrationPlate() != null){
-            query = query + "and registration_plate = ?";
+            query = query + " and registration_plate = ?";
         }
         if(car.getVinNumber() != null){
-            query = query + "and vin_number = ?";
+            query = query + " and vin_number = ?";
         }
         if (car.getPurchaseDate() != null){
-            query = query + "and purchase_date = ?";
+            query = query + " and purchase_date = ?";
         }
         if (car.getBrand() != null && car.getBrand().getId() != null){
-            query = query = "and brand_id = ?";
+            query = query + " and c.brand_id = ?";
         }
         if (car.getModel() != null && car.getModel().getId() != null){
-            query = query + "and model_id = ?";
+            query = query + " and c.model_id = ?";
         }
         return query;
     }

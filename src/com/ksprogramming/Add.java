@@ -20,36 +20,31 @@ public class Add {
         this.print = print;
     }
 
-    public static Car addCar(Boolean fullInformation) {
+    public static Car addCar() {
         System.out.println("Podaj numer rejestracyjny:");
         String regPlate = keyboard.nextLine();
+        regPlate = checkEquals(regPlate);
         System.out.println("Podaj VIN number:");
         String vinNumber = keyboard.nextLine();
-        System.out.println("Podaj date zakupu:\nRok:");
-        int year = keyboard.nextInt();
-        System.out.println("Miesiac:");
-        int month = keyboard.nextInt();
-        System.out.println("Dzien:");
-        int day = keyboard.nextInt();
+        vinNumber = checkEquals(vinNumber);
+        LocalDate localDate = addLocalDate();
         System.out.println("Podaj id marki:");
-        int idBrand;
-        if (fullInformation == true) {
-            Header.displayBrand();
-            print.printBrand();
-            idBrand = keyboard.nextInt();
-        } else {
-            idBrand = keyboard.nextInt();
-        }
+        String idBrand;
+        Integer idBrandStringToInt = 0;
+        Brand brand;
+        Header.displayBrand();
+        print.printBrands();
+        idBrand = keyboard.nextLine();
+        brand = new Brand(idBrandStringToInt = checkVariousEqual(idBrand));
         System.out.println("Podaj id modelu:");
-        int idModel;
-        if (fullInformation == true) {
-            Header.displayModels();
-            print.printModels(new Model(new Brand(idBrand)));
-            idModel = keyboard.nextInt();
-        } else {
-            idModel = keyboard.nextInt();
-        }
-        return new Car(regPlate, vinNumber, LocalDate.of(year, month, day), new Brand(idBrand), new Model(idModel));
+        String idModel;
+        Integer idModelStringToInt;
+        Model model;
+        Header.displayModels();
+        print.printModels(new Model(new Brand(idBrandStringToInt)));
+        idModel = keyboard.nextLine();
+        model = new Model(idModelStringToInt = checkVariousEqual(idModel));
+        return new Car(regPlate, vinNumber, localDate, brand, model);
     }
 
     public static Brand addBrand() {
@@ -58,45 +53,52 @@ public class Add {
         return new Brand(name);
     }
 
-    public static Model addModel(Boolean fullInformation) {
-        Integer brandId;
+    public static Model addModel() {
+        String brandId;
         System.out.println("Podaj Id marki:");
-        if (fullInformation == true) {
-            Header.displayBrand();
-            print.printBrand();
-            brandId = keyboard.nextInt();
-        } else {
-            brandId = keyboard.nextInt();
-        }
-        keyboard.nextLine();
+        Header.displayBrand();
+        print.printBrands();
+        brandId = keyboard.nextLine();
+        Integer brandIdStringToInt = checkVariousEqual(brandId);
         System.out.println("Podaj nazwe:");
         String name = keyboard.nextLine();
-        return new Model(new Brand(brandId), name);
+        return new Model(new Brand(brandIdStringToInt), name);
     }
 
     public static Customer addCustomer() {
         System.out.println("Podaj typ:");
         String type = keyboard.nextLine();
+        type = checkEquals(type);
         System.out.println("Podaj nazwe firmy:");
         String companyName = keyboard.nextLine();
+        companyName = checkEquals(companyName);
         System.out.println("Podaj tax number:");
         String taxNumber = keyboard.nextLine();
+        taxNumber = checkEquals(taxNumber);
         System.out.println("Podaj imie:");
         String firstName = keyboard.nextLine();
+        firstName = checkEquals(firstName);
         System.out.println("Podaj nazwisko:");
         String lastName = keyboard.nextLine();
+        lastName = checkEquals(lastName);
         System.out.println("Podaj pesel:");
         String pesel = keyboard.nextLine();
+        pesel = checkEquals(pesel);
         System.out.println("Podaj numer domu:");
         String houseNumber = keyboard.nextLine();
+        houseNumber = checkEquals(houseNumber);
         System.out.println("Podaj numer mieszkania:");
         String flatNumber = keyboard.nextLine();
+        flatNumber = checkEquals(flatNumber);
         System.out.println("Podaj nazwe ulicy:");
         String streetName = keyboard.nextLine();
+        streetName = checkEquals(streetName);
         System.out.println("Podaj miasto:");
         String city = keyboard.nextLine();
+        city = checkEquals(city);
         System.out.println("Podaj kod pocztowy:");
         String postCode = keyboard.nextLine();
+        postCode = checkEquals(postCode);
         return new Customer(type, companyName, taxNumber, firstName, lastName, pesel, houseNumber, flatNumber, streetName,
                 city, postCode);
     }
@@ -121,83 +123,141 @@ public class Add {
         return new Employee(firstName, lastName, pesel, houseNumber, flatNumber, streetName, city, postCode);
     }
 
-    public static RentInformation addRentInformation(Boolean fullInformation) {
-        Integer carId;
+    public static RentInformation addRentInformation() {
+
         System.out.println("Podaj id samochodu:");
-        if (fullInformation == true) {
-            Header.displayCar();
-            print.printCars();
-            carId = keyboard.nextInt();
-        } else {
-            carId = keyboard.nextInt();
-        }
+        Header.displayCar();
+        print.printCars();
+        String carId = keyboard.nextLine();
+        Integer carIdStringToInt = checkVariousEqual(carId);
         System.out.println("Podaj date rozpoczecia");
         LocalDateTime rentStart = addDateTime();
         System.out.println("Podaj date zakonczenia:");
         LocalDateTime rentFinish = addDateTime();
-        Integer employeeId;
         System.out.println("Podaj Id pracownika:");
-        if (fullInformation == true) {
-            Header.displayEmployee();
-            print.printEmployee();
-            employeeId = keyboard.nextInt();
-        } else {
-            employeeId = keyboard.nextInt();
-        }
-        Integer customerId;
+        Header.displayEmployee();
+        print.printEmployee();
+        String employeeId = keyboard.nextLine();
+        Integer employeeIdStringToInt = checkVariousEqual(employeeId);
         System.out.println("Podaj Id klienta:");
-        if (fullInformation == true) {
-            Header.displayCustomer();
-            print.printCustomer();
-            customerId = keyboard.nextInt();
-        } else {
-            customerId = keyboard.nextInt();
-        }
-        keyboard.nextLine();
+        Header.displayCustomer();
+        print.printCustomers();
+        String customerId = keyboard.nextLine();
+        Integer customerIdStringToInt = checkVariousEqual(customerId);
         System.out.println("Podaj typ:");
         String customerType = keyboard.nextLine();
+        customerType = checkEquals(customerType);
         System.out.println("Podaj nazwe firmy:");
         String customerCompanyName = keyboard.nextLine();
+        customerCompanyName = checkEquals(customerCompanyName);
         System.out.println("Podaj numer tax:");
         String customerTaxNumber = keyboard.nextLine();
+        customerTaxNumber = checkEquals(customerTaxNumber);
         System.out.println("Podaj imie klienta:");
         String customerFirstName = keyboard.nextLine();
+        customerFirstName = checkEquals(customerFirstName);
         System.out.println("Podaj nazwisko klienta:");
         String customerLastName = keyboard.nextLine();
+        customerLastName = checkEquals(customerLastName);
         System.out.println("Podaj pesel klienta:");
         String customerPesel = keyboard.nextLine();
+        customerPesel = checkEquals(customerPesel);
         System.out.println("Podaj numer domu klienta:");
         String customerHouseNumber = keyboard.nextLine();
+        customerHouseNumber = checkEquals(customerHouseNumber);
         System.out.println("Podaj numer mieszkania klienta:");
         String customerFlatNumber = keyboard.nextLine();
+        customerFlatNumber = checkEquals(customerFlatNumber);
         System.out.println("Podaj nazwe ulicy klienta");
         String customerStreetName = keyboard.nextLine();
+        customerStreetName = checkEquals(customerStreetName);
         System.out.println("Podaj miasto klienta:");
         String customerCity = keyboard.nextLine();
+        customerCity = checkEquals(customerCity);
         System.out.println("Podja kod pocztowy klienta:");
         String customerPostCode = keyboard.nextLine();
+        customerPostCode = checkEquals(customerPostCode);
         System.out.println("Podaj cene netto za dzien:");
-        BigDecimal rentNetPrice = keyboard.nextBigDecimal();
+        String rentNetPrice = keyboard.nextLine();
+        BigDecimal rentNetPriceStringToDecimal = checkVariousEqualDecimal(rentNetPrice);
         System.out.println("Podaj ile procent podatku:");
-        BigDecimal rentPercent = keyboard.nextBigDecimal();
-        BigDecimal rentGrossPrice = rentNetPrice.multiply(rentPercent.add(BigDecimal.valueOf(100)).divide(BigDecimal.valueOf(100)));
+        String rentPercent = keyboard.nextLine();
+        BigDecimal rentPercentStringToDecimal = checkVariousEqualDecimal(rentPercent);
+        BigDecimal rentGrossPrice;
+        if (rentNetPriceStringToDecimal == null && rentPercentStringToDecimal == null){
+            rentGrossPrice = null;
+        } else {
+            rentGrossPrice = rentNetPriceStringToDecimal.multiply(rentPercentStringToDecimal.add(BigDecimal.valueOf(100)).divide(BigDecimal.valueOf(100)));
+        }
 
-        return new RentInformation(new Car(carId), rentStart, rentFinish, new Employee(employeeId), new Customer(customerId), customerType, customerCompanyName, customerTaxNumber,
+        return new RentInformation(new Car(carIdStringToInt), rentStart, rentFinish, new Employee(employeeIdStringToInt), new Customer(customerIdStringToInt), customerType, customerCompanyName, customerTaxNumber,
                 customerFirstName, customerLastName, customerPesel, customerHouseNumber, customerFlatNumber, customerStreetName,
-                customerCity, customerPostCode, rentNetPrice, rentPercent, rentGrossPrice);
+                customerCity, customerPostCode, rentNetPriceStringToDecimal, rentPercentStringToDecimal, rentGrossPrice);
     }
 
     public static LocalDateTime addDateTime() {
         System.out.println("Podaj rok:");
-        Integer year = keyboard.nextInt();
+        String year = keyboard.nextLine();
+        Integer yearStringToInt = checkVariousEqual(year);
         System.out.println("Podaj miesiac:");
-        Integer month = keyboard.nextInt();
+        String month = keyboard.nextLine();
+        Integer monthStringToInt = checkVariousEqual(month);
         System.out.println("Podaj dzien:");
-        Integer day = keyboard.nextInt();
+        String day = keyboard.nextLine();
+        Integer dayStringToInt = checkVariousEqual(day);
         System.out.println("Podaj godzine:");
-        Integer hour = keyboard.nextInt();
+        String houre = keyboard.nextLine();
+        Integer hourStringToInt = checkVariousEqual(houre);
         System.out.println("Podaj minuty:");
-        Integer minute = keyboard.nextInt();
-        return LocalDateTime.of(year, month, day, hour, minute);
+        String minute = keyboard.nextLine();
+        Integer minuteStringToInt = checkVariousEqual(minute);
+        LocalDateTime localDateTime;
+        if (yearStringToInt == null || monthStringToInt == null || dayStringToInt == null || hourStringToInt == null || minuteStringToInt == null) {
+            return null;
+        } else {
+            return LocalDateTime.of(yearStringToInt, monthStringToInt, dayStringToInt, hourStringToInt, minuteStringToInt);
+        }
+    }
+
+    public static String checkEquals(String name) {
+        if ("".equals(name)) {
+            return null;
+        }
+        return name;
+    }
+
+    private static Integer checkVariousEqual(String name) {
+        Integer checkVariousEqual;
+        if (!"".equals(name)) {
+            return checkVariousEqual = Integer.valueOf(name);
+        }
+        return checkVariousEqual = null;
+    }
+
+    private static BigDecimal checkVariousEqualDecimal(String name) {
+        BigDecimal checkVariousEqual;
+        if (!"".equals(name)) {
+            return new BigDecimal(name);
+        }
+        return checkVariousEqual = null;
+    }
+
+
+
+    private static LocalDate addLocalDate() {
+        System.out.println("Podaj date zakupu:\nRok:");
+        String year = keyboard.nextLine();
+        Integer yearStringToInt = checkVariousEqual(year);
+        System.out.println("Miesiac:");
+        String month = keyboard.nextLine();
+        Integer monthStringToInt = checkVariousEqual(month);
+        System.out.println("Dzien:");
+        String day = keyboard.nextLine();
+        Integer dayStringToInt = checkVariousEqual(day);
+        LocalDate localDate;
+        if (yearStringToInt == null || monthStringToInt == null || dayStringToInt == null) {
+            return localDate = null;
+        }
+        return localDate = LocalDate.of(yearStringToInt, monthStringToInt, dayStringToInt);
     }
 }

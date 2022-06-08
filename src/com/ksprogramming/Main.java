@@ -34,7 +34,7 @@ public class Main {
 
         String url = "jdbc:mysql://localhost:3306/RentCar";
         String user = "root";
-        String password = "Krystianjava87pl";
+        String password = "Krystian87.pl";
 
         try {
             connection = DriverManager.getConnection(url, user, password);

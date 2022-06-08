@@ -12,12 +12,13 @@ public class Brand {
         this.name = name;
     }
 
-    public Brand(Integer id) {
-        this.id = id;
-    }
 
     public Brand(String name) {
         this.name = name;
+    }
+
+    public Brand(Integer id) {
+        this.id = id;
     }
 
 
@@ -31,6 +32,6 @@ public class Brand {
 
     @Override
     public String toString() {
-        return  id  + name  ;
+        return id + name;
     }
 }

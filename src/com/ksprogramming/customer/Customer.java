@@ -14,6 +14,9 @@ public class Customer {
     private String city;
     private String postCode;
 
+    public Customer() {
+    }
+
     public Customer(Integer id, String type, String companyName, String taxNumber, String firstName, String lastName, String pesel, String houseNumber, String flatNumber, String streetName, String city, String postCode) {
         this.id = id;
         this.type = type;

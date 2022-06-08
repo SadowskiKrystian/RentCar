@@ -125,12 +125,12 @@ public class ModelRepository {
     private String prepareQuery(Model model) {
         String query = "select * from brand as b " +
                 "join model as m on m.brand_id  = b.id " +
-                "where 1=1 ";
+                "where 1=1";
         if (model.getBrand() != null && model.getBrand().getId() != null) {
-            query = query + "and brand_id = ?";
+            query = query + " and brand_id = ?";
         }
         if (model.getName() != null){
-            query = query + "and name = ?";
+            query = query + " and m.name = ?";
         }
         return query;
     }

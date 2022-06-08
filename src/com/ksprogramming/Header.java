@@ -53,34 +53,37 @@ public class Header {
     }
     public static void displayRentInformation() {
         System.out.printf("%-15s", "Id:");
-        System.out.printf("%-15s", "Id Auta:");
+        System.out.printf("%-30s", "Numer rej. auta:");
         System.out.printf("%-30s", "Start wynaj:");
         System.out.printf("%-30s", "Koniec wynaj:");
-        System.out.printf("%-15s", "Id prac.:");
+        System.out.printf("%-15s", "Id prac:");
         System.out.printf("%-15s", "Id klienta:");
         System.out.printf("%-15s", "Typ:");
-        System.out.printf("%-30s", "Nazwa firmy");
-        System.out.printf("%-15s", "Numer tax");
+        System.out.printf("%-30s", "Nazwa firmy:");
+        System.out.printf("%-15s", "Numer tax:");
         System.out.printf("%-15s", "Imię:");
         System.out.printf("%-15s", "Nazwisko:");
         System.out.printf("%-15s", "Pesel:");
         System.out.printf("%-15s", "Nr domu:");
-        System.out.printf("%-15s", "Nr miesz.:");
+        System.out.printf("%-15s", "Nr miesz:");
         System.out.printf("%-25s", "Ulica:");
         System.out.printf("%-15s", "Miasto:");
         System.out.printf("%-15s", "Kod pocztowy:");
+        System.out.printf("%-15s", "Cena netto:");
+        System.out.printf("%-15s", "Procent:");
+        System.out.printf("%-15s", "Cena brutto");
         System.out.println("");
     }
     public static void displayCustomer() {
         System.out.printf("%-15s", "Id:");
         System.out.printf("%-15s", "Typ:");
-        System.out.printf("%-30s", "Nazwa firmy");
-        System.out.printf("%-15s", "Numer tax");
+        System.out.printf("%-30s", "Nazwa firmy:");
+        System.out.printf("%-15s", "Numer tax:");
         System.out.printf("%-15s", "Imię:");
         System.out.printf("%-15s", "Nazwisko:");
         System.out.printf("%-15s", "Pesel:");
         System.out.printf("%-15s", "Nr domu:");
-        System.out.printf("%-15s", "Nr miesz.:");
+        System.out.printf("%-15s", "Nr. miesz:");
         System.out.printf("%-25s", "Ulica:");
         System.out.printf("%-15s", "Miasto:");
         System.out.printf("%-15s", "Kod pocztowy:");

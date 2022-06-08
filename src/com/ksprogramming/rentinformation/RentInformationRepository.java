@@ -81,7 +81,7 @@ public class RentInformationRepository {
                             "employee_id, customer_id, customer_type, customer_company_name, customer_tax_number, customer_first_name, " +
                             "customer_last_name, customer_pesel, customer_house_number, customer_flat_number, customer_street_name, " +
                             "customer_city, customer_post_code, rent_net_price, rent_percent, rent_gross_price) " + "" +
-                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             preparedStatement.setInt(1, rentInformation.getCar().getId());
             preparedStatement.setTimestamp(2, DateTimeUtil.convertToSqlDateTime(rentInformation.getRentStart()));
             preparedStatement.setTimestamp(3, DateTimeUtil.convertToSqlDateTime(rentInformation.getRentFinish()));
@@ -161,7 +161,7 @@ public class RentInformationRepository {
     private List<RentInformation> prepareResultsSet(ResultSet resultSet) throws SQLException {
         List<RentInformation> addBrand = new ArrayList<>();
         while (resultSet.next()){
-            addBrand.add(new RentInformation(resultSet.getInt("r.id"), new Car(resultSet.getString("registration_plate")), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_start")), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_finish")),
+            addBrand.add(new RentInformation(resultSet.getInt("r.id"), new Car(resultSet.getString("c.registration_plate")), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_start")), DateTimeUtil.convertToLocalDateTime(resultSet.getDate("rent_finish")),
                     new Employee(resultSet.getString("first_name")), new Customer(resultSet.getString("first_name")), resultSet.getString("customer_type"),
                     resultSet.getString("customer_company_name"), resultSet.getString("customer_tax_number"), resultSet.getString("customer_first_name"),
                     resultSet.getString("customer_last_name"), resultSet.getString("customer_pesel"), resultSet.getString("customer_house_number"),
